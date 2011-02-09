@@ -51,6 +51,10 @@ namespace StickMagik
     public Microsoft.DirectX.Direct3D.Blend curSrcBlend = Microsoft.DirectX.Direct3D.Blend.BothSourceAlpha;   // Currently selected source blend mode.
     public Microsoft.DirectX.Direct3D.Blend curDestBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceColor;  // Currently selected destination blend mode.
     private Camera3D cam;
+    Color primaryColor = new Color();
+    Color secondaryColor = new Color();
+
+    private string assets = "../../Assets/";
 
     private CDXWrapper.CManagedDirectX.tPrimativeMesh primativeMesh;
 
@@ -61,7 +65,7 @@ namespace StickMagik
     {
       d3d = CManagedDirectX.Instance;
       //this.BackgroundImage
-      d3d.InitD3D(panel1, 1024, 768, true, false);
+      d3d.InitD3D(renderWindow, renderWindow.Width, renderWindow.Height, true, false);
       //test = Mesh.Sphere(d3d.Device, 100.0f, 12, 12);
       tm = ManagedTextureManager.Instance;
       tm.InitManagedTextureManager(d3d.Device, d3d.Sprite);
@@ -76,8 +80,8 @@ namespace StickMagik
       newmaterial.Ambient = Color.Blue;
       primativeMesh.material = newmaterial;
 
-      TEStick.filename = "TEStick.x";
-      d3d.LoadMesh("TEStick.x", ref TEStick.model, ref TEStick.materials, ref TEStick.textures, ref TEStick.radius);
+      TEStick.filename = assets + "TEStick.x";
+      d3d.LoadMesh(TEStick.filename, ref TEStick.model, ref TEStick.materials, ref TEStick.textures, ref TEStick.radius);
       TEStick.mWorld = Matrix.Identity;
 
       TEStick.materials[0].Diffuse = Color.Blue;
@@ -112,11 +116,6 @@ namespace StickMagik
       InitializeComponent();
       InitializeDevice();
       InitializeInput();
-      Toolbox tb = new Toolbox();
-      
-      AddOwnedForm(tb);
-      tb.Show();
-
     }
 
     public void Update()
@@ -318,6 +317,26 @@ namespace StickMagik
       else if (buttons[(int)MouseButtons.MOUSE_MIDDLE] != 0 && (keys[Key.LeftAlt] || keys[Key.RightAlt]))
       {
         cam.MoveCamera(clicks.Y*0.1f);
+      }
+    }
+
+    private void btnPrimaryColor_MouseDoubleClick(object sender, MouseEventArgs e)
+    {
+      colorDialog.Color = primaryColor;
+      if (colorDialog.ShowDialog() == DialogResult.OK)
+      {
+        primaryColor = colorDialog.Color;
+        btnPrimaryColor.BackColor = primaryColor;
+      }
+    }
+
+    private void btnSecondaryColor_MouseDoubleClick(object sender, MouseEventArgs e)
+    {
+      colorDialog.Color = secondaryColor;
+      if (colorDialog.ShowDialog() == DialogResult.OK)
+      {
+        secondaryColor = colorDialog.Color;
+        btnSecondaryColor.BackColor = colorDialog.Color;
       }
     }
   }

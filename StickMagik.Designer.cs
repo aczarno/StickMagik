@@ -64,9 +64,15 @@
           this.tsProgress = new System.Windows.Forms.ToolStripProgressBar();
           this.tsLabel = new System.Windows.Forms.ToolStripStatusLabel();
           this.tbFPS = new System.Windows.Forms.TextBox();
-          this.panel1 = new System.Windows.Forms.Panel();
+          this.renderWindow = new System.Windows.Forms.PictureBox();
+          this.innerWindow1 = new TestTool.InnerWindow();
+          this.btnPrimaryColor = new System.Windows.Forms.Panel();
+          this.btnSecondaryColor = new System.Windows.Forms.Panel();
+          this.colorDialog = new System.Windows.Forms.ColorDialog();
           this.menuStrip1.SuspendLayout();
           this.statusStrip1.SuspendLayout();
+          ((System.ComponentModel.ISupportInitialize)(this.renderWindow)).BeginInit();
+          this.innerWindow1.SuspendLayout();
           this.SuspendLayout();
           // 
           // menuStrip1
@@ -317,9 +323,9 @@
           this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsProgress,
             this.tsLabel});
-          this.statusStrip1.Location = new System.Drawing.Point(650, 792);
+          this.statusStrip1.Location = new System.Drawing.Point(0, 792);
           this.statusStrip1.Name = "statusStrip1";
-          this.statusStrip1.Size = new System.Drawing.Size(454, 22);
+          this.statusStrip1.Size = new System.Drawing.Size(1104, 22);
           this.statusStrip1.TabIndex = 2;
           this.statusStrip1.Text = "statusStrip1";
           // 
@@ -342,22 +348,59 @@
           this.tbFPS.Size = new System.Drawing.Size(61, 20);
           this.tbFPS.TabIndex = 4;
           // 
-          // panel1
+          // renderWindow
           // 
-          this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-          this.panel1.Location = new System.Drawing.Point(0, 24);
-          this.panel1.Name = "panel1";
-          this.panel1.Size = new System.Drawing.Size(650, 790);
-          this.panel1.TabIndex = 6;
+          this.renderWindow.BackColor = System.Drawing.SystemColors.ActiveCaption;
+          this.renderWindow.Dock = System.Windows.Forms.DockStyle.Fill;
+          this.renderWindow.Location = new System.Drawing.Point(0, 24);
+          this.renderWindow.Name = "renderWindow";
+          this.renderWindow.Size = new System.Drawing.Size(1104, 768);
+          this.renderWindow.TabIndex = 8;
+          this.renderWindow.TabStop = false;
+          // 
+          // innerWindow1
+          // 
+          this.innerWindow1.AutoScroll = true;
+          this.innerWindow1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+          this.innerWindow1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+          this.innerWindow1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+          this.innerWindow1.Controls.Add(this.btnPrimaryColor);
+          this.innerWindow1.Controls.Add(this.btnSecondaryColor);
+          this.innerWindow1.Location = new System.Drawing.Point(988, 27);
+          this.innerWindow1.Name = "innerWindow1";
+          this.innerWindow1.Size = new System.Drawing.Size(75, 299);
+          this.innerWindow1.TabIndex = 9;
+          this.innerWindow1.Title = "Toolbox";
+          // 
+          // btnPrimaryColor
+          // 
+          this.btnPrimaryColor.BackColor = System.Drawing.Color.Black;
+          this.btnPrimaryColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+          this.btnPrimaryColor.Location = new System.Drawing.Point(4, 265);
+          this.btnPrimaryColor.Name = "btnPrimaryColor";
+          this.btnPrimaryColor.Size = new System.Drawing.Size(30, 29);
+          this.btnPrimaryColor.TabIndex = 1;
+          this.btnPrimaryColor.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.btnPrimaryColor_MouseDoubleClick);
+          // 
+          // btnSecondaryColor
+          // 
+          this.btnSecondaryColor.BackColor = System.Drawing.Color.White;
+          this.btnSecondaryColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+          this.btnSecondaryColor.Location = new System.Drawing.Point(40, 265);
+          this.btnSecondaryColor.Name = "btnSecondaryColor";
+          this.btnSecondaryColor.Size = new System.Drawing.Size(30, 29);
+          this.btnSecondaryColor.TabIndex = 1;
+          this.btnSecondaryColor.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.btnSecondaryColor_MouseDoubleClick);
           // 
           // StickMagik
           // 
           this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
           this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
           this.ClientSize = new System.Drawing.Size(1104, 814);
+          this.Controls.Add(this.innerWindow1);
+          this.Controls.Add(this.renderWindow);
           this.Controls.Add(this.tbFPS);
           this.Controls.Add(this.statusStrip1);
-          this.Controls.Add(this.panel1);
           this.Controls.Add(this.menuStrip1);
           this.IsMdiContainer = true;
           this.MainMenuStrip = this.menuStrip1;
@@ -367,6 +410,9 @@
           this.menuStrip1.PerformLayout();
           this.statusStrip1.ResumeLayout(false);
           this.statusStrip1.PerformLayout();
+          ((System.ComponentModel.ISupportInitialize)(this.renderWindow)).EndInit();
+          this.innerWindow1.ResumeLayout(false);
+          this.innerWindow1.PerformLayout();
           this.ResumeLayout(false);
           this.PerformLayout();
 
@@ -409,7 +455,11 @@
         private System.Windows.Forms.ToolStripProgressBar tsProgress;
         private System.Windows.Forms.ToolStripStatusLabel tsLabel;
         private System.Windows.Forms.TextBox tbFPS;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.PictureBox renderWindow;
+        private TestTool.InnerWindow innerWindow1;
+        private System.Windows.Forms.Panel btnPrimaryColor;
+        private System.Windows.Forms.Panel btnSecondaryColor;
+        private System.Windows.Forms.ColorDialog colorDialog;
     }
 }
 

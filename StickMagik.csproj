@@ -70,6 +70,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CManagedDirectX.cs" />
+    <Compile Include="InnerWindow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="InnerWindow.designer.cs">
+      <DependentUpon>InnerWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="ManagedTextureManager.cs" />
     <Compile Include="StickMagik.cs">
       <SubType>Form</SubType>
@@ -79,6 +85,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="InnerWindow.resx">
+      <DependentUpon>InnerWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="StickMagik.resx">
       <DependentUpon>StickMagik.cs</DependentUpon>
     </EmbeddedResource>
@@ -86,9 +95,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Toolbox.resx">
-      <DependentUpon>Toolbox.cs</DependentUpon>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -102,12 +108,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Toolbox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Toolbox.Designer.cs">
-      <DependentUpon>Toolbox.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
