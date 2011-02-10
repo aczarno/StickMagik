@@ -63,12 +63,13 @@
           this.statusStrip1 = new System.Windows.Forms.StatusStrip();
           this.tsProgress = new System.Windows.Forms.ToolStripProgressBar();
           this.tsLabel = new System.Windows.Forms.ToolStripStatusLabel();
-          this.tbFPS = new System.Windows.Forms.TextBox();
           this.renderWindow = new System.Windows.Forms.PictureBox();
-          this.innerWindow1 = new TestTool.InnerWindow();
-          this.btnPrimaryColor = new System.Windows.Forms.Panel();
-          this.btnSecondaryColor = new System.Windows.Forms.Panel();
           this.colorDialog = new System.Windows.Forms.ColorDialog();
+          this.innerWindow1 = new TestTool.InnerWindow();
+          this.tbXY = new System.Windows.Forms.TextBox();
+          this.btnPrimaryColor = new System.Windows.Forms.Panel();
+          this.tbFPS = new System.Windows.Forms.TextBox();
+          this.btnSecondaryColor = new System.Windows.Forms.Panel();
           this.menuStrip1.SuspendLayout();
           this.statusStrip1.SuspendLayout();
           ((System.ComponentModel.ISupportInitialize)(this.renderWindow)).BeginInit();
@@ -340,14 +341,6 @@
           this.tsLabel.Name = "tsLabel";
           this.tsLabel.Size = new System.Drawing.Size(0, 17);
           // 
-          // tbFPS
-          // 
-          this.tbFPS.Location = new System.Drawing.Point(1031, 27);
-          this.tbFPS.Name = "tbFPS";
-          this.tbFPS.ReadOnly = true;
-          this.tbFPS.Size = new System.Drawing.Size(61, 20);
-          this.tbFPS.TabIndex = 4;
-          // 
           // renderWindow
           // 
           this.renderWindow.BackColor = System.Drawing.SystemColors.ActiveCaption;
@@ -357,6 +350,7 @@
           this.renderWindow.Size = new System.Drawing.Size(1104, 768);
           this.renderWindow.TabIndex = 8;
           this.renderWindow.TabStop = false;
+          this.renderWindow.MouseMove += new System.Windows.Forms.MouseEventHandler(this.renderWindow_MouseMove);
           // 
           // innerWindow1
           // 
@@ -364,13 +358,22 @@
           this.innerWindow1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
           this.innerWindow1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
           this.innerWindow1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+          this.innerWindow1.Controls.Add(this.tbXY);
           this.innerWindow1.Controls.Add(this.btnPrimaryColor);
+          this.innerWindow1.Controls.Add(this.tbFPS);
           this.innerWindow1.Controls.Add(this.btnSecondaryColor);
-          this.innerWindow1.Location = new System.Drawing.Point(988, 27);
+          this.innerWindow1.Location = new System.Drawing.Point(892, 27);
           this.innerWindow1.Name = "innerWindow1";
-          this.innerWindow1.Size = new System.Drawing.Size(75, 299);
+          this.innerWindow1.Size = new System.Drawing.Size(171, 299);
           this.innerWindow1.TabIndex = 9;
           this.innerWindow1.Title = "Toolbox";
+          // 
+          // tbXY
+          // 
+          this.tbXY.Location = new System.Drawing.Point(4, 45);
+          this.tbXY.Name = "tbXY";
+          this.tbXY.Size = new System.Drawing.Size(162, 20);
+          this.tbXY.TabIndex = 2;
           // 
           // btnPrimaryColor
           // 
@@ -381,6 +384,14 @@
           this.btnPrimaryColor.Size = new System.Drawing.Size(30, 29);
           this.btnPrimaryColor.TabIndex = 1;
           this.btnPrimaryColor.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.btnPrimaryColor_MouseDoubleClick);
+          // 
+          // tbFPS
+          // 
+          this.tbFPS.Location = new System.Drawing.Point(4, 71);
+          this.tbFPS.Name = "tbFPS";
+          this.tbFPS.ReadOnly = true;
+          this.tbFPS.Size = new System.Drawing.Size(61, 20);
+          this.tbFPS.TabIndex = 4;
           // 
           // btnSecondaryColor
           // 
@@ -399,7 +410,6 @@
           this.ClientSize = new System.Drawing.Size(1104, 814);
           this.Controls.Add(this.innerWindow1);
           this.Controls.Add(this.renderWindow);
-          this.Controls.Add(this.tbFPS);
           this.Controls.Add(this.statusStrip1);
           this.Controls.Add(this.menuStrip1);
           this.IsMdiContainer = true;
@@ -460,6 +470,7 @@
         private System.Windows.Forms.Panel btnPrimaryColor;
         private System.Windows.Forms.Panel btnSecondaryColor;
         private System.Windows.Forms.ColorDialog colorDialog;
+        private System.Windows.Forms.TextBox tbXY;
     }
 }
 

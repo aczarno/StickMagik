@@ -292,7 +292,8 @@ namespace StickMagik
       KeyboardState keys = keyboard.GetCurrentKeyboardState();
       MouseState clicks = mouse.CurrentMouseState;
 
-     
+      //tbXY.Text = clicks.ToString();
+      
       /*if (keys[Key.W])
         cam.moveCameraIn(1f);
       if (keys[Key.S])
@@ -318,6 +319,18 @@ namespace StickMagik
       {
         cam.MoveCamera(clicks.Y*0.1f);
       }
+      else if (buttons[(int)MouseButtons.MOUSE_LEFT] != 0)
+      {
+        if (meshPick(TEStick.model, clicks.X, clicks.Y) == true)
+        {
+          return;
+        }
+        else
+        {
+          return;
+        }
+
+      }
     }
 
     private void btnPrimaryColor_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -338,6 +351,42 @@ namespace StickMagik
         secondaryColor = colorDialog.Color;
         btnSecondaryColor.BackColor = colorDialog.Color;
       }
+    }
+
+    private bool meshPick(Mesh mesh, int x, int y)
+    {
+      Vector3 v = new Vector3();
+      v.X = (((2.0f * x) / renderWindow.Width) - 1) / d3d.Device.GetTransform(TransformType.Projection).M11;
+      v.Y = -(((2.0f * y) / renderWindow.Height) - 1) / d3d.Device.GetTransform(TransformType.Projection).M22;
+      v.Z = 1.0f;
+
+      Matrix m = d3d.Device.GetTransform(TransformType.View);
+      Vector3 rayOrigin, rayDir;
+
+      m.Invert();
+      rayDir.X = v.X * m.M11 + v.Y * m.M21 + v.Z * m.M31;
+      rayDir.Y = v.X * m.M12 + v.Y * m.M22 + v.Z * m.M32;
+      rayDir.Z = v.X * m.M13 + v.Y * m.M23 + v.Z * m.M33;
+      rayOrigin.X = m.M41;
+      rayOrigin.Y = m.M42;
+      rayOrigin.Z = m.M43;
+
+      Matrix matInverse;
+      matInverse = d3d.Device.GetTransform(TransformType.World);
+      matInverse.Invert();
+
+      rayOrigin.TransformCoordinate(matInverse);
+      rayDir.TransformNormal(matInverse);
+      rayDir.Normalize();
+
+      //IntersectInformation info;
+      return mesh.Intersect(rayOrigin, rayDir);
+    }
+
+    private void renderWindow_MouseMove(object sender, MouseEventArgs e)
+    {
+      //int x = e.Location.X;
+      tbXY.Text = e.Location.ToString();
     }
   }
 }
