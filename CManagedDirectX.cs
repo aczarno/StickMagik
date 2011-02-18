@@ -145,7 +145,7 @@ namespace CDXWrapper
         else if (currentLine.StartsWith("vt"))
         {
           string[] texture = currentLine.Split(' ');
-          texcoords.Add(new Vector3((float)Convert.ToDouble(texture[1]), (float)Convert.ToDouble(texture[2]), (float)Convert.ToDouble(texture[3]))); 
+          texcoords.Add(new Vector3((float)Convert.ToDouble(texture[1]), (float)Convert.ToDouble(texture[2]), (float)Convert.ToDouble(texture[3])));
         }
         else if (currentLine[0] == 'f')
         {
@@ -160,7 +160,7 @@ namespace CDXWrapper
         {
         }
       }
-      
+
     }
 
     public void LoadMesh(string filename, ref Mesh mesh, ref Material[] meshmaterials, ref Texture[] meshtextures, ref float meshradius)
@@ -169,38 +169,94 @@ namespace CDXWrapper
 
       try
       {
-        
         mesh = Mesh.FromFile(filename, MeshFlags.Managed, device, out materialarray);
-      
-      if ((materialarray != null) && (materialarray.Length > 0))
-      {
-        meshmaterials = new Material[materialarray.Length];
-        meshtextures = new Texture[materialarray.Length];
 
-        for (int i = 0; i < materialarray.Length; i++)
+        if ((materialarray != null) && (materialarray.Length > 0))
         {
-          meshmaterials[i] = materialarray[i].Material3D;
-          meshmaterials[i].Ambient = meshmaterials[i].Diffuse;
+          meshmaterials = new Material[materialarray.Length];
+          meshtextures = new Texture[materialarray.Length];
 
-          if ((materialarray[i].TextureFilename != null) && (materialarray[i].TextureFilename != string.Empty))
+          for (int i = 0; i < materialarray.Length; i++)
           {
-            meshtextures[i] = TextureLoader.FromFile(device, materialarray[i].TextureFilename);
+            meshmaterials[i] = materialarray[i].Material3D;
+            meshmaterials[i].Ambient = meshmaterials[i].Diffuse;
+
+            if ((materialarray[i].TextureFilename != null) && (materialarray[i].TextureFilename != string.Empty))
+            {
+              meshtextures[i] = TextureLoader.FromFile(device, materialarray[i].TextureFilename);
+            }
           }
         }
-      }
 
-      mesh = mesh.Clone(mesh.Options.Value, CustomVertex.PositionNormalTextured.Format, device);
-      mesh.ComputeNormals();
+        mesh = mesh.Clone(mesh.Options.Value, CustomVertex.PositionNormalTextured.Format, device);
+        mesh.ComputeNormals();
 
-      VertexBuffer vertices = mesh.VertexBuffer;
-      GraphicsStream stream = vertices.Lock(0, 0, LockFlags.None);
-      Vector3 meshcenter;
-      meshradius = Geometry.ComputeBoundingSphere(stream, mesh.NumberVertices, mesh.VertexFormat, out meshcenter) * 0.0005f; //* scale; // HACK
+        VertexBuffer vertices = mesh.VertexBuffer;
+        GraphicsStream stream = vertices.Lock(0, 0, LockFlags.None);
+        Vector3 meshcenter;
+        meshradius = Geometry.ComputeBoundingSphere(stream, mesh.NumberVertices, mesh.VertexFormat, out meshcenter) * 0.0005f; //* scale; // HACK
       }
-      catch(Exception e)
+      catch (Exception e)
       {
         return;
       }
+    }
+
+    public void LoadOBJ(string filename, ref Mesh mesh, ref Material[] meshmaterials, ref Texture[] meshtextures, ref float meshradius)
+    {
+      ArrayList verticies = new ArrayList();
+      ArrayList textureCoords = new ArrayList();
+      ArrayList vertexNormals = new ArrayList();
+      ArrayList groups = new ArrayList();
+      ArrayList faces;
+
+      int groupStartIndex = 0;
+      string groupName = "";
+
+      if (!File.Exists(filename))
+      {
+        using (StreamReader reader = File.OpenText(filename))
+        {
+          string[] components;
+          string s = "";
+          while ((s = reader.ReadLine()) != null)
+          {
+            components = s.Split(' ');
+            switch (components[0])
+            {
+              case "#": // Comment
+                break;
+              case "v": // Vertex 
+
+                verticies.Add(new Vector3((float)Convert.ToDecimal(components[1]), (float)Convert.ToDecimal(components[2]), (float)Convert.ToDecimal(components[3])));
+                break;
+              case "vt": // Texture coords
+                textureCoords.Add(new Vector3((float)Convert.ToDecimal(components[1]), (float)Convert.ToDecimal(components[2]), (float)Convert.ToDecimal(components[3])));
+                break;
+              case "vn": // Vertex normal
+                vertexNormals.Add(new Vector3((float)Convert.ToDecimal(components[1]), (float)Convert.ToDecimal(components[2]), (float)Convert.ToDecimal(components[3])));
+                break;
+              case "f": // Face
+                break;
+              case "g": // Group for all predicessing faces until next group
+                // Need a special case for the last group in the file.
+                if (groupName != "")
+                {
+                  //groups.Add(
+                }
+                // Set up for the next group
+                groupName = components[2];
+                groupStartIndex = verticies.Count - 1;
+                break;
+              case "usemtl": // Material for all predicessing faces until next usemtl
+                break;
+              default:
+                break;
+            }
+            
+          }
+        }
+      }      
     }
 
     public void DrawMesh(Mesh mesh, Material[] meshmaterials, Texture[] meshtextures)
@@ -281,7 +337,7 @@ namespace CDXWrapper
     public void DrawGround(float groundSize, float gridSize, float groundLevel, Color color)
     {
       ArrayList verts = new ArrayList();
-      for(float x = -groundSize; x<groundSize; x+=gridSize)
+      for (float x = -groundSize; x < groundSize; x += gridSize)
       {
         CustomVertex.PositionColored vert = new CustomVertex.PositionColored();
         vert.Position = new Vector3(x, groundLevel, groundSize);
@@ -302,7 +358,7 @@ namespace CDXWrapper
         vert.Position = new Vector3(-groundSize, groundLevel, x);
         vert.Color = color.ToArgb();
         verts.Add(vert);
-	    }
+      }
       CustomVertex.PositionColored[] lines = (CustomVertex.PositionColored[])verts.ToArray(typeof(CustomVertex.PositionColored));
       device.VertexFormat = CustomVertex.PositionColored.Format;
       device.DrawUserPrimitives(PrimitiveType.LineList, (int)((groundSize * 4) / gridSize), lines);
@@ -337,8 +393,8 @@ namespace CDXWrapper
   }
   public class Camera3D
   {
-    private Vector3 cameraPosition;   
-    private Vector3 cameraTarget;    
+    private Vector3 cameraPosition;
+    private Vector3 cameraTarget;
     private Vector3 cameraUpVector;
 
     private float radius = 1;
@@ -373,15 +429,15 @@ namespace CDXWrapper
       set { moveDist = value; }
     }
 
-    public Camera3D() 
-    { 
+    public Camera3D()
+    {
     }
 
     public void SetCamera(Vector3 cPosition, float h, float v)
     {
       cameraPosition = cPosition;
-      cameraTarget = new Vector3(0,0,0);
-      cameraUpVector = new Vector3(0,0,0);
+      cameraTarget = new Vector3(0, 0, 0);
+      cameraUpVector = new Vector3(0, 0, 0);
       hRadians = h;
       vRadians = v;
 
