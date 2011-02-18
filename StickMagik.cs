@@ -139,10 +139,7 @@ namespace StickMagik
 
       // Updates Here -------------------------------------------------------------------------------------------
 
-      // ---------------
-      // Camera here
-      d3d.Device.Transform.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4, this.Width / this.Height, 1f, 500f);
-      d3d.Device.Transform.View = Matrix.LookAtLH(cam.CameraPosition, cam.CameraTarget, cam.CameraUpVector);
+   
       // --------------
       d3d.Device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.Gray, 1.0f, 0);
       // Begin Rendering
@@ -156,7 +153,8 @@ namespace StickMagik
       d3d.Device.RenderState.AlphaSourceBlend = Blend.SourceAlpha;
       d3d.Device.RenderState.DestinationBlend = Blend.InvSourceAlpha;
 
-      //d3d.DrawPrimativeMesh(primativeMesh);
+      d3d.DrawGround(10, 1, 0, Color.HotPink);     
+
       d3d.Device.Transform.World = TEStick.mWorld;
       d3d.DrawMesh(TEStick.model, TEStick.materials, TEStick.textures);
       // -~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~
@@ -168,7 +166,6 @@ namespace StickMagik
       d3d.Device.SetRenderState(Microsoft.DirectX.Direct3D.RenderStates.ZBufferWriteEnable, false);
       d3d.Device.SetRenderState(Microsoft.DirectX.Direct3D.RenderStates.AlphaBlendEnable, true);
       d3d.Device.SetRenderState(Microsoft.DirectX.Direct3D.RenderStates.AlphaTestEnable, true);
-
       d3d.Device.SetRenderState(Microsoft.DirectX.Direct3D.RenderStates.SourceBlend,
           Convert.ToInt32(curSrcBlend));
       d3d.Device.SetRenderState(Microsoft.DirectX.Direct3D.RenderStates.DestinationBlend,
@@ -180,6 +177,11 @@ namespace StickMagik
       d3d.SpriteEnd();
       d3d.Device.SetRenderState(Microsoft.DirectX.Direct3D.RenderStates.ZBufferWriteEnable, true);
       #endregion
+
+      // ---------------
+      // Camera here
+      d3d.Device.Transform.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4, this.Width / this.Height, 1f, 500f);
+      d3d.Device.Transform.View = Matrix.LookAtLH(cam.CameraPosition, cam.CameraTarget, cam.CameraUpVector);
 
       d3d.Device.EndScene();
       d3d.Device.Present();
@@ -355,7 +357,7 @@ namespace StickMagik
 
     private bool meshPick(Mesh mesh, int x, int y)
     {
-      Vector3 v = new Vector3();
+      Vector3 v = new Vector3(0,0,0);
       v.X = (((2.0f * x) / renderWindow.Width) - 1) / d3d.Device.GetTransform(TransformType.Projection).M11;
       v.Y = -(((2.0f * y) / renderWindow.Height) - 1) / d3d.Device.GetTransform(TransformType.Projection).M22;
       v.Z = 1.0f;

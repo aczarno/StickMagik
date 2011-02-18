@@ -260,7 +260,7 @@ namespace CDXWrapper
       return true;
     }
 
-    public bool DrawLine(int x1, int y1, int x2, int y2, Int32 red, Int32 green, Int32 blue)
+    public bool Draw2DLine(int x1, int y1, int x2, int y2, Int32 red, Int32 green, Int32 blue)
     {
       if (line == null)
         return false;
@@ -296,14 +296,48 @@ namespace CDXWrapper
 
       glEnd();
       */
+      ArrayList verts = new ArrayList();
+      for(float x = -groundSize; x<groundSize; x+=gridSize)
+      {
+        CustomVertex.PositionColored vert = new CustomVertex.PositionColored();
+        vert.Position = new Vector3(x, groundLevel, groundSize);
+        //vert.Position = new Vector3(x, groundSize, groundLevel);
+        vert.Color = color.ToArgb();
+        verts.Add(vert);
+
+        vert = new CustomVertex.PositionColored();
+        vert.Position = new Vector3(x, groundLevel, -groundSize);
+        //vert.Position = new Vector3(x, -groundSize, groundLevel);
+        vert.Color = color.ToArgb();
+        verts.Add(vert);
+
+        vert = new CustomVertex.PositionColored();
+        vert.Position = new Vector3(groundSize, groundLevel, x);
+        //vert.Position = new Vector3(groundSize, x, groundLevel);
+        vert.Color = color.ToArgb();
+        verts.Add(vert);
+
+        vert = new CustomVertex.PositionColored();
+        vert.Position = new Vector3(-groundSize, groundLevel, x);
+        //vert.Position = new Vector3(-groundSize, x, groundLevel);
+        vert.Color = color.ToArgb();
+        verts.Add(vert);
+	    }
+      CustomVertex.PositionColored[] lines = (CustomVertex.PositionColored[])verts.ToArray(typeof(CustomVertex.PositionColored));
+      device.VertexFormat = CustomVertex.PositionColored.Format;
+      device.DrawUserPrimitives(PrimitiveType.LineList, (int)((groundSize * 4) / gridSize), lines);
+      //device.
+      /*CustomVertex.TransformedColored[] lines = new CustomVertex.TransformedColored[2];
+      lines[0].Position = new Vector4(200, 0, 200, 1.0f);
+      lines[0].Color = Color.FromArgb(0, 255, 0).ToArgb();
+      lines[1].Position = new Vector4(250, 0, 250, 1.0f);
+      lines[1].Color = Color.FromArgb(0, 255, 0).ToArgb();*/
+
+      //device.VertexFormat = CustomVertex.TransformedColored.Format;
+      //device.DrawUserPrimitives(PrimitiveType.LineList, 1, lines);
     }
     public void FillQuad(ref CustomVertex.PositionNormalTextured[] verticesarray, float width, float height)
     {
-      Vector3 a = new Vector3(-(width * 0.5f), (height * 0.5f), 0.0f);
-      Vector3 b = new Vector3((width * 0.5f), (height * 0.5f), 0.0f);
-      Vector3 c = new Vector3((width * 0.5f), -(height * 0.5f), 0.0f);
-      Vector3 d = new Vector3(-(width * 0.5f), -(height * 0.5f), 0.0f);
-
       ArrayList verts = new ArrayList();
       verts.Add(new CustomVertex.PositionNormalTextured(new Vector3(-(width * 0.5f), (height * 0.5f), 0.0f), new Vector3(0.0f, 0.0f, 1.0f), 0, 1));
       verts.Add(new CustomVertex.PositionNormalTextured(new Vector3((width * 0.5f), (height * 0.5f), 0.0f), new Vector3(0.0f, 0.0f, 1.0f), 1, 1));
@@ -375,8 +409,8 @@ namespace CDXWrapper
     public void SetCamera(Vector3 cPosition, float h, float v)
     {
       cameraPosition = cPosition;
-      cameraTarget = new Vector3();
-      cameraUpVector = new Vector3();
+      cameraTarget = new Vector3(0,0,0);
+      cameraUpVector = new Vector3(0,0,0);
       hRadians = h;
       vRadians = v;
 
