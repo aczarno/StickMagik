@@ -62,11 +62,10 @@
           this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
           this.statusStrip1 = new System.Windows.Forms.StatusStrip();
           this.tsProgress = new System.Windows.Forms.ToolStripProgressBar();
-          this.tsLabel = new System.Windows.Forms.ToolStripStatusLabel();
+          this.lblMouseCoords = new System.Windows.Forms.ToolStripStatusLabel();
           this.renderWindow = new System.Windows.Forms.PictureBox();
           this.colorDialog = new System.Windows.Forms.ColorDialog();
           this.innerWindow1 = new TestTool.InnerWindow();
-          this.tbXY = new System.Windows.Forms.TextBox();
           this.btnPrimaryColor = new System.Windows.Forms.Panel();
           this.tbFPS = new System.Windows.Forms.TextBox();
           this.btnSecondaryColor = new System.Windows.Forms.Panel();
@@ -323,23 +322,32 @@
           // 
           this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsProgress,
-            this.tsLabel});
+            this.lblMouseCoords});
+          this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
           this.statusStrip1.Location = new System.Drawing.Point(0, 792);
           this.statusStrip1.Name = "statusStrip1";
+          this.statusStrip1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
           this.statusStrip1.Size = new System.Drawing.Size(1104, 22);
           this.statusStrip1.TabIndex = 2;
           this.statusStrip1.Text = "statusStrip1";
           // 
           // tsProgress
           // 
+          this.tsProgress.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
           this.tsProgress.Name = "tsProgress";
           this.tsProgress.Size = new System.Drawing.Size(100, 16);
           this.tsProgress.Step = 1;
           // 
-          // tsLabel
+          // lblMouseCoords
           // 
-          this.tsLabel.Name = "tsLabel";
-          this.tsLabel.Size = new System.Drawing.Size(0, 17);
+          this.lblMouseCoords.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+          this.lblMouseCoords.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+          this.lblMouseCoords.Name = "lblMouseCoords";
+          this.lblMouseCoords.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+          this.lblMouseCoords.RightToLeftAutoMirrorImage = true;
+          this.lblMouseCoords.Size = new System.Drawing.Size(81, 17);
+          this.lblMouseCoords.Spring = true;
+          this.lblMouseCoords.Text = "X:9999, Y:9999";
           // 
           // renderWindow
           // 
@@ -358,7 +366,6 @@
           this.innerWindow1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
           this.innerWindow1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
           this.innerWindow1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-          this.innerWindow1.Controls.Add(this.tbXY);
           this.innerWindow1.Controls.Add(this.btnPrimaryColor);
           this.innerWindow1.Controls.Add(this.tbFPS);
           this.innerWindow1.Controls.Add(this.btnSecondaryColor);
@@ -367,13 +374,6 @@
           this.innerWindow1.Size = new System.Drawing.Size(171, 299);
           this.innerWindow1.TabIndex = 9;
           this.innerWindow1.Title = "Toolbox";
-          // 
-          // tbXY
-          // 
-          this.tbXY.Location = new System.Drawing.Point(4, 45);
-          this.tbXY.Name = "tbXY";
-          this.tbXY.Size = new System.Drawing.Size(162, 20);
-          this.tbXY.TabIndex = 2;
           // 
           // btnPrimaryColor
           // 
@@ -463,14 +463,13 @@
         private System.Windows.Forms.ToolStripMenuItem downloadToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar tsProgress;
-        private System.Windows.Forms.ToolStripStatusLabel tsLabel;
         private System.Windows.Forms.TextBox tbFPS;
         private System.Windows.Forms.PictureBox renderWindow;
         private TestTool.InnerWindow innerWindow1;
         private System.Windows.Forms.Panel btnPrimaryColor;
         private System.Windows.Forms.Panel btnSecondaryColor;
         private System.Windows.Forms.ColorDialog colorDialog;
-        private System.Windows.Forms.TextBox tbXY;
+        private System.Windows.Forms.ToolStripStatusLabel lblMouseCoords;
     }
 }
 

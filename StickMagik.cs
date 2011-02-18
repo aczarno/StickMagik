@@ -51,8 +51,10 @@ namespace StickMagik
     public Microsoft.DirectX.Direct3D.Blend curSrcBlend = Microsoft.DirectX.Direct3D.Blend.BothSourceAlpha;   // Currently selected source blend mode.
     public Microsoft.DirectX.Direct3D.Blend curDestBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceColor;  // Currently selected destination blend mode.
     private Camera3D cam;
-    Color primaryColor = new Color();
-    Color secondaryColor = new Color();
+    private Color primaryColor = new Color();
+    private Color secondaryColor = new Color();
+    private int mouseX;
+    private int mouseY;
 
     private string assets = "../../Assets/";
 
@@ -153,7 +155,7 @@ namespace StickMagik
       d3d.Device.RenderState.AlphaSourceBlend = Blend.SourceAlpha;
       d3d.Device.RenderState.DestinationBlend = Blend.InvSourceAlpha;
 
-      d3d.DrawGround(10, 1, 0, Color.HotPink);     
+      d3d.DrawGround(10, 1, 0, Color.Blue);     
 
       d3d.Device.Transform.World = TEStick.mWorld;
       d3d.DrawMesh(TEStick.model, TEStick.materials, TEStick.textures);
@@ -256,8 +258,8 @@ namespace StickMagik
             }
           }
         }
-        tsLabel.Text = "Parsed Pages " + i.ToString() + '/' + numPages.ToString();
-        tsLabel.Invalidate();
+        //tsLabel.Text = "Parsed Pages " + i.ToString() + '/' + numPages.ToString();
+        //tsLabel.Invalidate();
         tsProgress.PerformStep();
       }
       tsProgress.Maximum = imageURLs.Count;
@@ -279,7 +281,7 @@ namespace StickMagik
             image.Save(filename);
           }
         }
-        tsLabel.Text = "Saved Images " + i.ToString() + '/' + imageURLs.Count.ToString();
+        //tsLabel.Text = "Saved Images " + i.ToString() + '/' + imageURLs.Count.ToString();
         tsProgress.PerformStep();
       }
       return;
@@ -323,7 +325,7 @@ namespace StickMagik
       }
       else if (buttons[(int)MouseButtons.MOUSE_LEFT] != 0)
       {
-        if (meshPick(TEStick.model, clicks.X, clicks.Y) == true)
+        if (meshPick(TEStick, mouseX, mouseY) == true)
         {
           return;
         }
@@ -355,7 +357,7 @@ namespace StickMagik
       }
     }
 
-    private bool meshPick(Mesh mesh, int x, int y)
+    private bool meshPick(arcadeStick mesh, int x, int y)
     {
       Vector3 v = new Vector3(0,0,0);
       v.X = (((2.0f * x) / renderWindow.Width) - 1) / d3d.Device.GetTransform(TransformType.Projection).M11;
@@ -374,21 +376,24 @@ namespace StickMagik
       rayOrigin.Z = m.M43;
 
       Matrix matInverse;
-      matInverse = d3d.Device.GetTransform(TransformType.World);
+      matInverse = mesh.mWorld;
       matInverse.Invert();
 
       rayOrigin.TransformCoordinate(matInverse);
       rayDir.TransformNormal(matInverse);
       rayDir.Normalize();
 
+
       //IntersectInformation info;
-      return mesh.Intersect(rayOrigin, rayDir);
+      return mesh.model.Intersect(rayOrigin, rayDir);
     }
 
     private void renderWindow_MouseMove(object sender, MouseEventArgs e)
     {
-      //int x = e.Location.X;
-      tbXY.Text = e.Location.ToString();
+      mouseX = e.X;
+      mouseY = e.Y;
+      lblMouseCoords.Text = "X:" + e.X.ToString() + ", Y:" + e.Y.ToString();
+
     }
   }
 }

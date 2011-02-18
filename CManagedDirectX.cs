@@ -280,61 +280,32 @@ namespace CDXWrapper
 
     public void DrawGround(float groundSize, float gridSize, float groundLevel, Color color)
     {
-      /*line.GlLines = true;
-      //line.
-      line.DrawTransform
-      glBegin(GL_LINES);
-
-      for (float x = -groundSize; x <= groundSize; x += gridSize)
-      {
-          glVertex3f(x, groundLevel, groundSize);
-          glVertex3f(x, groundLevel, -groundSize);
-
-          glVertex3f(groundSize, groundLevel, x);
-          glVertex3f(-groundSize, groundLevel, x);
-      }
-
-      glEnd();
-      */
       ArrayList verts = new ArrayList();
       for(float x = -groundSize; x<groundSize; x+=gridSize)
       {
         CustomVertex.PositionColored vert = new CustomVertex.PositionColored();
         vert.Position = new Vector3(x, groundLevel, groundSize);
-        //vert.Position = new Vector3(x, groundSize, groundLevel);
         vert.Color = color.ToArgb();
         verts.Add(vert);
 
         vert = new CustomVertex.PositionColored();
         vert.Position = new Vector3(x, groundLevel, -groundSize);
-        //vert.Position = new Vector3(x, -groundSize, groundLevel);
         vert.Color = color.ToArgb();
         verts.Add(vert);
 
         vert = new CustomVertex.PositionColored();
         vert.Position = new Vector3(groundSize, groundLevel, x);
-        //vert.Position = new Vector3(groundSize, x, groundLevel);
         vert.Color = color.ToArgb();
         verts.Add(vert);
 
         vert = new CustomVertex.PositionColored();
         vert.Position = new Vector3(-groundSize, groundLevel, x);
-        //vert.Position = new Vector3(-groundSize, x, groundLevel);
         vert.Color = color.ToArgb();
         verts.Add(vert);
 	    }
       CustomVertex.PositionColored[] lines = (CustomVertex.PositionColored[])verts.ToArray(typeof(CustomVertex.PositionColored));
       device.VertexFormat = CustomVertex.PositionColored.Format;
       device.DrawUserPrimitives(PrimitiveType.LineList, (int)((groundSize * 4) / gridSize), lines);
-      //device.
-      /*CustomVertex.TransformedColored[] lines = new CustomVertex.TransformedColored[2];
-      lines[0].Position = new Vector4(200, 0, 200, 1.0f);
-      lines[0].Color = Color.FromArgb(0, 255, 0).ToArgb();
-      lines[1].Position = new Vector4(250, 0, 250, 1.0f);
-      lines[1].Color = Color.FromArgb(0, 255, 0).ToArgb();*/
-
-      //device.VertexFormat = CustomVertex.TransformedColored.Format;
-      //device.DrawUserPrimitives(PrimitiveType.LineList, 1, lines);
     }
     public void FillQuad(ref CustomVertex.PositionNormalTextured[] verticesarray, float width, float height)
     {
