@@ -84,6 +84,7 @@ namespace StickMagik
 
       TEStick.filename = assets + "TEStick.x";
       d3d.LoadMesh(TEStick.filename, ref TEStick.model, ref TEStick.materials, ref TEStick.textures, ref TEStick.radius);
+      d3d.LoadOBJ(assets + "cube.obj", ref TEStick.model, ref TEStick.materials, ref TEStick.textures, ref TEStick.radius);
       TEStick.mWorld = Matrix.Identity;
 
       TEStick.materials[0].Diffuse = Color.Blue;

@@ -120,49 +120,6 @@ namespace CDXWrapper
       }
     }
 
-    public void LoadOBJ(string filename, ref Mesh[] meshs, ref Material[] materials, ref Texture[] textures, ref float radius)
-    {
-      ArrayList verts = new ArrayList();
-      ArrayList norms = new ArrayList();
-      ArrayList texcoords = new ArrayList();
-
-      StreamReader model = new StreamReader(filename);
-      string currentLine;
-
-      while (!model.EndOfStream)
-      {
-        currentLine = model.ReadLine();
-        if (currentLine[0] == 'v')
-        {
-          string[] vert = currentLine.Split(' ');
-          verts.Add(new Vector3((float)Convert.ToDouble(vert[1]), (float)Convert.ToDouble(vert[2]), (float)Convert.ToDouble(vert[3])));
-        }
-        else if (currentLine.StartsWith("vn"))
-        {
-          string[] normal = currentLine.Split(' ');
-          norms.Add(new Vector3((float)Convert.ToDouble(normal[1]), (float)Convert.ToDouble(normal[2]), (float)Convert.ToDouble(normal[3])));
-        }
-        else if (currentLine.StartsWith("vt"))
-        {
-          string[] texture = currentLine.Split(' ');
-          texcoords.Add(new Vector3((float)Convert.ToDouble(texture[1]), (float)Convert.ToDouble(texture[2]), (float)Convert.ToDouble(texture[3])));
-        }
-        else if (currentLine[0] == 'f')
-        {
-        }
-        else if (currentLine[0] == 'g')
-        {
-        }
-        else if (currentLine.StartsWith("usemtl"))
-        {
-        }
-        else if (currentLine[0] == '#')
-        {
-        }
-      }
-
-    }
-
     public void LoadMesh(string filename, ref Mesh mesh, ref Material[] meshmaterials, ref Texture[] meshtextures, ref float meshradius)
     {
       ExtendedMaterial[] materialarray;
@@ -202,32 +159,62 @@ namespace CDXWrapper
       }
     }
 
+    private struct Face
+    {
+      public int[] verticies;
+      public int[] texCoords;
+      public int[] normals;
+    };
+
+    private struct Group
+    {
+      public string name;
+      public int startFaceIndex;
+      public int endFaceIndex;
+    };
+
+    private struct MatGroup
+    {
+      public string material;
+      public int startFaceIndex;
+      public int endFaceIndex;
+    };
+
     public void LoadOBJ(string filename, ref Mesh mesh, ref Material[] meshmaterials, ref Texture[] meshtextures, ref float meshradius)
     {
+      char[] delimSpace = new char[] { ' ' };
+      char[] delimSlash = new char[] { '/' };
       ArrayList verticies = new ArrayList();
       ArrayList textureCoords = new ArrayList();
       ArrayList vertexNormals = new ArrayList();
       ArrayList groups = new ArrayList();
-      ArrayList faces;
-
+      ArrayList faces = new ArrayList();
+      ArrayList matGroups = new ArrayList();
+      
       int groupStartIndex = 0;
       string groupName = "";
+      string materialName = "";
+      int matGroupStartIndex = 0;
 
-      if (!File.Exists(filename))
+
+      if (File.Exists(filename))
       {
         using (StreamReader reader = File.OpenText(filename))
         {
           string[] components;
+          string[] faceVerts;
           string s = "";
           while ((s = reader.ReadLine()) != null)
           {
-            components = s.Split(' ');
+            s.Normalize();
+            components = s.Split(delimSpace, StringSplitOptions.RemoveEmptyEntries);
+            if (components.Length == 0)
+              continue;
             switch (components[0])
             {
               case "#": // Comment
                 break;
               case "v": // Vertex 
-
                 verticies.Add(new Vector3((float)Convert.ToDecimal(components[1]), (float)Convert.ToDecimal(components[2]), (float)Convert.ToDecimal(components[3])));
                 break;
               case "vt": // Texture coords
@@ -237,23 +224,83 @@ namespace CDXWrapper
                 vertexNormals.Add(new Vector3((float)Convert.ToDecimal(components[1]), (float)Convert.ToDecimal(components[2]), (float)Convert.ToDecimal(components[3])));
                 break;
               case "f": // Face
+                Face newFace = new Face();
+                newFace.verticies = new int[components.Length - 1];
+                newFace.texCoords = new int[components.Length - 1];
+                newFace.normals = new int[components.Length - 1];
+                // Formats: v/vt/vn or v/vt or v//vn
+                for (int i = 1; i < components.Length; i++)
+                {
+                  faceVerts = components[i].Split(delimSlash, StringSplitOptions.RemoveEmptyEntries);
+                  
+                  // Format: v/vt/vn
+                  if (faceVerts.Length == 3)
+                  {
+                    newFace.vertex = Convert.ToInt32(faceVerts[0]);
+                    newFace.texCoord = Convert.ToInt32(faceVerts[1]);
+                    newFace.normal = Convert.ToInt32(faceVerts[2]);
+                  }
+                  else if (faceVerts.Length == 2)
+                  {
+                    newFace.vertex = Convert.ToInt32(faceVerts[0]);
+                    // Format: v//vn
+                    if (faceVerts[1].StartsWith("/"))
+                    {
+                      newFace.normal = Convert.ToInt32(faceVerts[1].Substring(1));
+                    }
+                    // Format: v/vt
+                    else
+                    {
+                      newFace.texCoord = Convert.ToInt32(faceVerts[1]);
+                    }
+                  }
+                  faces.Add(newFace);
+                }
                 break;
               case "g": // Group for all predicessing faces until next group
                 // Need a special case for the last group in the file.
                 if (groupName != "")
                 {
-                  //groups.Add(
+                  Group newGroup = new Group();
+                  newGroup.startFaceIndex = groupStartIndex;
+                  newGroup.name = groupName;
+                  newGroup.endFaceIndex = faces.Count - 1;
                 }
                 // Set up for the next group
-                groupName = components[2];
-                groupStartIndex = verticies.Count - 1;
+                groupName = components[1];
+                groupStartIndex = faces.Count;
                 break;
               case "usemtl": // Material for all predicessing faces until next usemtl
+                if (materialName != "")
+                {
+                  MatGroup newGroup = new MatGroup();
+                  newGroup.startFaceIndex = matGroupStartIndex;
+                  newGroup.material = materialName;
+                  newGroup.endFaceIndex = faces.Count - 1;
+                }
+                // Set up for the next group
+                materialName = components[1];
+                matGroupStartIndex = faces.Count;
                 break;
               default:
                 break;
-            }
-            
+            } // switch
+          } // while
+          
+          if(groupName != "")
+          {
+            Group newGroup = new Group();
+            newGroup.startFaceIndex = groupStartIndex;
+            newGroup.name = groupName;
+            newGroup.endFaceIndex = faces.Count - 1;
+          }
+
+          if(materialName != "")
+          {
+            MatGroup newGroup = new MatGroup();
+            newGroup.startFaceIndex = matGroupStartIndex;
+            newGroup.material = materialName;
+            newGroup.endFaceIndex = faces.Count - 1;
           }
         }
       }      
