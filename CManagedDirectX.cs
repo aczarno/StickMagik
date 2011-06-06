@@ -182,6 +182,7 @@ namespace CDXWrapper
 
     public void LoadOBJ(string filename, ref Mesh mesh, ref Material[] meshmaterials, ref Texture[] meshtextures, ref float meshradius)
     {
+      
       char[] delimSpace = new char[] { ' ' };
       char[] delimSlash = new char[] { '/' };
       ArrayList verticies = new ArrayList();
@@ -196,6 +197,7 @@ namespace CDXWrapper
       string materialName = "";
       int matGroupStartIndex = 0;
 
+      VertexFormats format = VertexFormats.None;
 
       if (File.Exists(filename))
       {
@@ -229,33 +231,39 @@ namespace CDXWrapper
                 newFace.texCoords = new int[components.Length - 1];
                 newFace.normals = new int[components.Length - 1];
                 // Formats: v/vt/vn or v/vt or v//vn
-                for (int i = 1; i < components.Length; i++)
+                for (int i = 1; i < components.Length-1; i++)
                 {
                   faceVerts = components[i].Split(delimSlash, StringSplitOptions.RemoveEmptyEntries);
                   
                   // Format: v/vt/vn
                   if (faceVerts.Length == 3)
                   {
-                    newFace.vertex = Convert.ToInt32(faceVerts[0]);
-                    newFace.texCoord = Convert.ToInt32(faceVerts[1]);
-                    newFace.normal = Convert.ToInt32(faceVerts[2]);
+                    if (format == VertexFormats.None)
+                      format = CustomVertex.PositionNormalTextured.Format;
+                    newFace.verticies[i] = Convert.ToInt32(faceVerts[0]);
+                    newFace.texCoords[i] = Convert.ToInt32(faceVerts[1]);
+                    newFace.normals[i] = Convert.ToInt32(faceVerts[2]);
                   }
                   else if (faceVerts.Length == 2)
                   {
-                    newFace.vertex = Convert.ToInt32(faceVerts[0]);
+                    newFace.verticies[i] = Convert.ToInt32(faceVerts[0]);
                     // Format: v//vn
                     if (faceVerts[1].StartsWith("/"))
                     {
-                      newFace.normal = Convert.ToInt32(faceVerts[1].Substring(1));
+                      if (format == VertexFormats.None)
+                        format = CustomVertex.PositionNormal.Format;
+                      newFace.normals[i] = Convert.ToInt32(faceVerts[1].Substring(1));
                     }
                     // Format: v/vt
                     else
                     {
-                      newFace.texCoord = Convert.ToInt32(faceVerts[1]);
+                      if (format == VertexFormats.None)
+                        format = CustomVertex.PositionTextured.Format;
+                      newFace.texCoords[i] = Convert.ToInt32(faceVerts[1]);
                     }
                   }
-                  faces.Add(newFace);
                 }
+                faces.Add(newFace);
                 break;
               case "g": // Group for all predicessing faces until next group
                 // Need a special case for the last group in the file.
@@ -293,6 +301,7 @@ namespace CDXWrapper
             newGroup.startFaceIndex = groupStartIndex;
             newGroup.name = groupName;
             newGroup.endFaceIndex = faces.Count - 1;
+            groups.Add(newGroup);
           }
 
           if(materialName != "")
@@ -301,8 +310,43 @@ namespace CDXWrapper
             newGroup.startFaceIndex = matGroupStartIndex;
             newGroup.material = materialName;
             newGroup.endFaceIndex = faces.Count - 1;
+            matGroups.Add(newGroup);
           }
         }
+
+        //CustomVertex[] verts;
+        //CustomVertex.PositionColored[] lines = (CustomVertex.PositionColored[])verts.ToArray(typeof(CustomVertex.PositionColored));
+        ArrayList customVerts = new ArrayList();
+        for (int i = 0; i < verticies.Count; i++)
+        {
+          switch (format)
+          {
+            case CustomVertex.PositionNormalTextured.Format:
+              customVerts.Add(new CustomVertex.PositionNormalTextured((Vector3)verticies[i], (Vector3)vertexNormals[i], ((Vector3)textureCoords[i]).X, ((Vector3)textureCoords[i]).Y));
+              break;
+            case CustomVertex.PositionTextured.Format:
+              customVerts.Add(new CustomVertex.PositionTextured((Vector3)verticies[i], ((Vector3)textureCoords[i]).X, ((Vector3)textureCoords[i]).Y));
+              break;
+            case CustomVertex.PositionNormal.Format:
+              customVerts.Add(new CustomVertex.PositionNormal((Vector3)verticies[i], (Vector3)vertexNormals[i]));
+              break;
+          };
+        }
+        mesh = new Mesh(faces.Count, verticies.Count, MeshFlags.Managed, format, device);
+
+        switch (format)
+        {
+          case CustomVertex.PositionNormalTextured.Format:
+            mesh.SetVertexBufferData((CustomVertex.PositionNormalTextured[])customVerts.ToArray(typeof(CustomVertex.PositionNormalTextured)), LockFlags.None);
+            break;
+          case CustomVertex.PositionTextured.Format:
+            mesh.SetVertexBufferData((CustomVertex.PositionTextured[])customVerts.ToArray(typeof(CustomVertex.PositionTextured)), LockFlags.None);
+            break;
+          case CustomVertex.PositionNormal.Format:
+            mesh.SetVertexBufferData((CustomVertex.PositionNormal[])customVerts.ToArray(typeof(CustomVertex.PositionNormal)), LockFlags.None);
+            break;
+        };
+        
       }      
     }
 
