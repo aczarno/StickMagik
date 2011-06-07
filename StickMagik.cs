@@ -83,21 +83,21 @@ namespace StickMagik
       primativeMesh.material = newmaterial;
 
       TEStick.filename = assets + "TEStick.x";
-      d3d.LoadMesh(TEStick.filename, ref TEStick.model, ref TEStick.materials, ref TEStick.textures, ref TEStick.radius);
+      //d3d.LoadMesh(TEStick.filename, ref TEStick.model, ref TEStick.materials, ref TEStick.textures, ref TEStick.radius);
       d3d.LoadOBJ(assets + "cube.obj", ref TEStick.model, ref TEStick.materials, ref TEStick.textures, ref TEStick.radius);
       TEStick.mWorld = Matrix.Identity;
 
       TEStick.materials[0].Diffuse = Color.Blue;
-      TEStick.materials[1].Diffuse = Color.Red;
+      /*TEStick.materials[1].Diffuse = Color.Red;
       TEStick.materials[2].Diffuse = Color.Green;
       TEStick.materials[3].Diffuse = Color.Yellow;
       TEStick.materials[4].Diffuse = Color.Purple;
       TEStick.materials[5].Diffuse = Color.Orange;
       TEStick.materials[6].Diffuse = Color.White;
       TEStick.materials[7].Diffuse = Color.Black;
-      TEStick.materials[8].Diffuse = Color.Turquoise;
+      TEStick.materials[8].Diffuse = Color.Turquoise;*/
 
-      TEStick.mWorld.RotateYawPitchRoll((float)Math.PI, (float)Math.PI / 2f, 0);
+      //TEStick.mWorld.RotateYawPitchRoll((float)Math.PI, (float)Math.PI / 2f, 0);
       // Set up our camera
       cam = new Camera3D();
       cam.SetCamera(new Vector3(0, 0, 10), (float)Math.PI*3f/2f, 0);
@@ -297,6 +297,7 @@ namespace StickMagik
       KeyboardState keys = keyboard.GetCurrentKeyboardState();
       MouseState clicks = mouse.CurrentMouseState;
 
+      
       //tbXY.Text = clicks.ToString();
       
       /*if (keys[Key.W])
