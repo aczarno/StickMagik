@@ -63,15 +63,14 @@
           this.statusStrip1 = new System.Windows.Forms.StatusStrip();
           this.tsProgress = new System.Windows.Forms.ToolStripProgressBar();
           this.lblMouseCoords = new System.Windows.Forms.ToolStripStatusLabel();
-          this.renderWindow = new System.Windows.Forms.PictureBox();
           this.colorDialog = new System.Windows.Forms.ColorDialog();
+          this.dockContainer = new Crom.Controls.Docking.DockContainer();
           this.innerWindow1 = new TestTool.InnerWindow();
           this.btnPrimaryColor = new System.Windows.Forms.Panel();
           this.tbFPS = new System.Windows.Forms.TextBox();
           this.btnSecondaryColor = new System.Windows.Forms.Panel();
           this.menuStrip1.SuspendLayout();
           this.statusStrip1.SuspendLayout();
-          ((System.ComponentModel.ISupportInitialize)(this.renderWindow)).BeginInit();
           this.innerWindow1.SuspendLayout();
           this.SuspendLayout();
           // 
@@ -349,16 +348,20 @@
           this.lblMouseCoords.Spring = true;
           this.lblMouseCoords.Text = "X:9999, Y:9999";
           // 
-          // renderWindow
+          // dockContainer
           // 
-          this.renderWindow.BackColor = System.Drawing.SystemColors.ActiveCaption;
-          this.renderWindow.Dock = System.Windows.Forms.DockStyle.Fill;
-          this.renderWindow.Location = new System.Drawing.Point(0, 24);
-          this.renderWindow.Name = "renderWindow";
-          this.renderWindow.Size = new System.Drawing.Size(1104, 768);
-          this.renderWindow.TabIndex = 8;
-          this.renderWindow.TabStop = false;
-          this.renderWindow.MouseMove += new System.Windows.Forms.MouseEventHandler(this.renderWindow_MouseMove);
+          this.dockContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(118)))), ((int)(((byte)(118)))));
+          this.dockContainer.CanMoveByMouseFilledForms = true;
+          this.dockContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+          this.dockContainer.Location = new System.Drawing.Point(0, 24);
+          this.dockContainer.Name = "dockContainer";
+          this.dockContainer.Size = new System.Drawing.Size(1104, 768);
+          this.dockContainer.TabIndex = 11;
+          this.dockContainer.TitleBarGradientColor1 = System.Drawing.SystemColors.Control;
+          this.dockContainer.TitleBarGradientColor2 = System.Drawing.Color.White;
+          this.dockContainer.TitleBarGradientSelectedColor1 = System.Drawing.Color.DarkGray;
+          this.dockContainer.TitleBarGradientSelectedColor2 = System.Drawing.Color.White;
+          this.dockContainer.TitleBarTextColor = System.Drawing.Color.Black;
           // 
           // innerWindow1
           // 
@@ -369,7 +372,7 @@
           this.innerWindow1.Controls.Add(this.btnPrimaryColor);
           this.innerWindow1.Controls.Add(this.tbFPS);
           this.innerWindow1.Controls.Add(this.btnSecondaryColor);
-          this.innerWindow1.Location = new System.Drawing.Point(892, 27);
+          this.innerWindow1.Location = new System.Drawing.Point(732, 216);
           this.innerWindow1.Name = "innerWindow1";
           this.innerWindow1.Size = new System.Drawing.Size(171, 299);
           this.innerWindow1.TabIndex = 9;
@@ -409,10 +412,9 @@
           this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
           this.ClientSize = new System.Drawing.Size(1104, 814);
           this.Controls.Add(this.innerWindow1);
-          this.Controls.Add(this.renderWindow);
+          this.Controls.Add(this.dockContainer);
           this.Controls.Add(this.statusStrip1);
           this.Controls.Add(this.menuStrip1);
-          this.IsMdiContainer = true;
           this.MainMenuStrip = this.menuStrip1;
           this.Name = "StickMagik";
           this.Text = "StickMagik";
@@ -420,7 +422,6 @@
           this.menuStrip1.PerformLayout();
           this.statusStrip1.ResumeLayout(false);
           this.statusStrip1.PerformLayout();
-          ((System.ComponentModel.ISupportInitialize)(this.renderWindow)).EndInit();
           this.innerWindow1.ResumeLayout(false);
           this.innerWindow1.PerformLayout();
           this.ResumeLayout(false);
@@ -464,12 +465,12 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar tsProgress;
         private System.Windows.Forms.TextBox tbFPS;
-        private System.Windows.Forms.PictureBox renderWindow;
         private TestTool.InnerWindow innerWindow1;
         private System.Windows.Forms.Panel btnPrimaryColor;
         private System.Windows.Forms.Panel btnSecondaryColor;
         private System.Windows.Forms.ColorDialog colorDialog;
         private System.Windows.Forms.ToolStripStatusLabel lblMouseCoords;
+        private Crom.Controls.Docking.DockContainer dockContainer;
     }
 }
 

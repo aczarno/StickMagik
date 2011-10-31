@@ -62,12 +62,17 @@ namespace StickMagik
 
     arcadeStick TEStick;
 
+    RenderWindow rw;
     // Functions
     public void InitializeDevice()
     {
+      rw = new RenderWindow();
+      Toolbox tb = new Toolbox();
+      dockContainer.Add(rw, Crom.Controls.Docking.zAllowedDock.All, new Guid("a6402b80-2ebd-4fd3-8930-024a6201d001"));
+      dockContainer.Add(tb, Crom.Controls.Docking.zAllowedDock.All, new Guid("096b52a7-5f4b-44ee-ab77-9830ec717002"));
       d3d = CManagedDirectX.Instance;
       //this.BackgroundImage
-      d3d.InitD3D(renderWindow, renderWindow.Width, renderWindow.Height, true, false);
+      d3d.InitD3D(rw, rw.Width, rw.Height, true, false);
       //test = Mesh.Sphere(d3d.Device, 100.0f, 12, 12);
       tm = ManagedTextureManager.Instance;
       tm.InitManagedTextureManager(d3d.Device, d3d.Sprite);
@@ -83,8 +88,8 @@ namespace StickMagik
       primativeMesh.material = newmaterial;
 
       TEStick.filename = assets + "TEStick.x";
-      //d3d.LoadMesh(TEStick.filename, ref TEStick.model, ref TEStick.materials, ref TEStick.textures, ref TEStick.radius);
-      d3d.LoadOBJ(assets + "cube.obj", ref TEStick.model, ref TEStick.materials, ref TEStick.textures, ref TEStick.radius);
+      d3d.LoadMesh(TEStick.filename, ref TEStick.model, ref TEStick.materials, ref TEStick.textures, ref TEStick.radius);
+      //d3d.LoadOBJ(assets + "cube.obj", ref TEStick.model, ref TEStick.materials, ref TEStick.textures, ref TEStick.radius);
       TEStick.mWorld = Matrix.Identity;
 
       TEStick.materials[0].Diffuse = Color.Blue;
@@ -362,8 +367,8 @@ namespace StickMagik
     private bool meshPick(arcadeStick mesh, int x, int y)
     {
       Vector3 v = new Vector3(0,0,0);
-      v.X = (((2.0f * x) / renderWindow.Width) - 1) / d3d.Device.GetTransform(TransformType.Projection).M11;
-      v.Y = -(((2.0f * y) / renderWindow.Height) - 1) / d3d.Device.GetTransform(TransformType.Projection).M22;
+      v.X = (((2.0f * x) / rw.Width) - 1) / d3d.Device.GetTransform(TransformType.Projection).M11;
+      v.Y = -(((2.0f * y) / rw.Height) - 1) / d3d.Device.GetTransform(TransformType.Projection).M22;
       v.Z = 1.0f;
 
       Matrix m = d3d.Device.GetTransform(TransformType.View);
