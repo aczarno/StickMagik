@@ -30,6 +30,7 @@
     {
       this.btnPrimaryColor = new System.Windows.Forms.Panel();
       this.btnSecondaryColor = new System.Windows.Forms.Panel();
+      this.colorDialog = new System.Windows.Forms.ColorDialog();
       this.SuspendLayout();
       // 
       // btnPrimaryColor
@@ -40,6 +41,7 @@
       this.btnPrimaryColor.Name = "btnPrimaryColor";
       this.btnPrimaryColor.Size = new System.Drawing.Size(25, 25);
       this.btnPrimaryColor.TabIndex = 0;
+      this.btnPrimaryColor.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.btnPrimaryColor_MouseDoubleClick);
       // 
       // btnSecondaryColor
       // 
@@ -49,6 +51,7 @@
       this.btnSecondaryColor.Name = "btnSecondaryColor";
       this.btnSecondaryColor.Size = new System.Drawing.Size(25, 25);
       this.btnSecondaryColor.TabIndex = 0;
+      this.btnSecondaryColor.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.btnSecondaryColor_MouseDoubleClick);
       // 
       // Toolbox
       // 
@@ -68,5 +71,6 @@
 
     private System.Windows.Forms.Panel btnPrimaryColor;
     private System.Windows.Forms.Panel btnSecondaryColor;
+    private System.Windows.Forms.ColorDialog colorDialog;
   }
 }

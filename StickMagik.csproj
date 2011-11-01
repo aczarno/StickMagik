@@ -74,12 +74,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CManagedDirectX.cs" />
-    <Compile Include="InnerWindow.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="InnerWindow.designer.cs">
-      <DependentUpon>InnerWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="ManagedTextureManager.cs" />
     <Compile Include="RenderWindow.cs">
       <SubType>Form</SubType>
@@ -95,9 +89,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="InnerWindow.resx">
-      <DependentUpon>InnerWindow.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="RenderWindow.resx">
       <DependentUpon>RenderWindow.cs</DependentUpon>
     </EmbeddedResource>

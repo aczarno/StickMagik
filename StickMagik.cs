@@ -16,6 +16,7 @@ using CDXWrapper;
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using Microsoft.DirectX.DirectInput;
+using Crom.Controls.Docking;
 
 namespace StickMagik
 {
@@ -51,8 +52,6 @@ namespace StickMagik
     public Microsoft.DirectX.Direct3D.Blend curSrcBlend = Microsoft.DirectX.Direct3D.Blend.BothSourceAlpha;   // Currently selected source blend mode.
     public Microsoft.DirectX.Direct3D.Blend curDestBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceColor;  // Currently selected destination blend mode.
     private Camera3D cam;
-    private Color primaryColor = new Color();
-    private Color secondaryColor = new Color();
     private int mouseX;
     private int mouseY;
 
@@ -68,7 +67,7 @@ namespace StickMagik
     {
       rw = new RenderWindow();
       Toolbox tb = new Toolbox();
-      dockContainer.Add(rw, Crom.Controls.Docking.zAllowedDock.All, new Guid("a6402b80-2ebd-4fd3-8930-024a6201d001"));
+      DockableFormInfo info = dockContainer.Add(rw, Crom.Controls.Docking.zAllowedDock.All, new Guid("a6402b80-2ebd-4fd3-8930-024a6201d001"));
       dockContainer.Add(tb, Crom.Controls.Docking.zAllowedDock.All, new Guid("096b52a7-5f4b-44ee-ab77-9830ec717002"));
       d3d = CManagedDirectX.Instance;
       //this.BackgroundImage
@@ -142,7 +141,7 @@ namespace StickMagik
         frameCounter = 0;
         frameTimer = Environment.TickCount;
 
-        tbFPS.Text = fps.ToString();
+        //tbFPS.Text = fps.ToString();
       }
 
       // Updates Here -------------------------------------------------------------------------------------------
@@ -341,26 +340,6 @@ namespace StickMagik
           return;
         }
 
-      }
-    }
-
-    private void btnPrimaryColor_MouseDoubleClick(object sender, MouseEventArgs e)
-    {
-      colorDialog.Color = primaryColor;
-      if (colorDialog.ShowDialog() == DialogResult.OK)
-      {
-        primaryColor = colorDialog.Color;
-        btnPrimaryColor.BackColor = primaryColor;
-      }
-    }
-
-    private void btnSecondaryColor_MouseDoubleClick(object sender, MouseEventArgs e)
-    {
-      colorDialog.Color = secondaryColor;
-      if (colorDialog.ShowDialog() == DialogResult.OK)
-      {
-        secondaryColor = colorDialog.Color;
-        btnSecondaryColor.BackColor = colorDialog.Color;
       }
     }
 

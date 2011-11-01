@@ -181,7 +181,6 @@ namespace CDXWrapper
 
     public void LoadOBJ(string filename, ref Mesh mesh, ref Material[] meshmaterials, ref Texture[] meshtextures, ref float meshradius)
     {
-      
       char[] delimSpace = new char[] { ' ' };
       char[] delimSlash = new char[] { '/' };
       ArrayList verticies = new ArrayList();
@@ -383,6 +382,7 @@ namespace CDXWrapper
       device.Transform.World = Matrix.Scaling(mesh.scale) * Matrix.Translation(mesh.position) * Matrix.RotationX(mesh.rotation.X) * Matrix.RotationY(mesh.rotation.Y) * Matrix.RotationZ(mesh.rotation.Z);
       mesh.mesh.DrawSubset(0);
     }
+
     /// <summary>
     /// Begins the Sprite (MUST be called between DeviceBegin() and DeviceEnd()!).
     /// </summary>
@@ -404,6 +404,7 @@ namespace CDXWrapper
 
       return true;
     }
+
     public bool SpriteEnd()
     {
       if (sprite == null)
@@ -421,6 +422,7 @@ namespace CDXWrapper
 
       return true;
     }
+
     public bool Draw2DLine(int x1, int y1, int x2, int y2, Int32 red, Int32 green, Int32 blue)
     {
       if (line == null)
@@ -438,6 +440,7 @@ namespace CDXWrapper
 
       return true;
     }
+
     public void DrawGround(float groundSize, float gridSize, float groundLevel, Color color)
     {
       ArrayList verts = new ArrayList();
@@ -467,6 +470,7 @@ namespace CDXWrapper
       device.VertexFormat = CustomVertex.PositionColored.Format;
       device.DrawUserPrimitives(PrimitiveType.LineList, (int)((groundSize * 4) / gridSize), lines);
     }
+
     public void FillQuad(ref CustomVertex.PositionNormalTextured[] verticesarray, float width, float height)
     {
       ArrayList verts = new ArrayList();
@@ -486,6 +490,7 @@ namespace CDXWrapper
 
       verticesarray = (CustomVertex.PositionNormalTextured[])verts.ToArray(typeof(CustomVertex.PositionNormalTextured));
     }
+
     public void DrawQuad(tPrimativeMesh mesh, CustomVertex.PositionNormalTextured[] verticesarray)
     {
       device.Transform.World = Matrix.Scaling(mesh.scale) * Matrix.Translation(mesh.position) * Matrix.RotationX(mesh.rotation.X) * Matrix.RotationY(mesh.rotation.Y) * Matrix.RotationZ(mesh.rotation.Z);
@@ -495,6 +500,7 @@ namespace CDXWrapper
       device.DrawUserPrimitives(PrimitiveType.TriangleList, 4, verticesarray);
     }
   }
+
   public class Camera3D
   {
     private Vector3 cameraPosition;
@@ -507,31 +513,11 @@ namespace CDXWrapper
     private float hRadians;
     private float vRadians;
 
-    public Vector3 CameraPosition
-    {
-      get { return cameraPosition; }
-      set { cameraPosition = value; }
-    }
-    public Vector3 CameraTarget
-    {
-      get { return cameraTarget; }
-      set { cameraTarget = value; }
-    }
-    public Vector3 CameraUpVector
-    {
-      get { return cameraUpVector; }
-      set { cameraUpVector = value; }
-    }
-    public float Radius
-    {
-      get { return radius; }
-      set { radius = value; }
-    }
-    public float MoveDist
-    {
-      get { return moveDist; }
-      set { moveDist = value; }
-    }
+    public Vector3 CameraPosition { get { return cameraPosition; } set { cameraPosition = value; } }
+    public Vector3 CameraTarget { get { return cameraTarget; } set { cameraTarget = value; } }
+    public Vector3 CameraUpVector { get { return cameraUpVector; } set { cameraUpVector = value; } }
+    public float Radius { get { return radius; } set { radius = value; } }
+    public float MoveDist { get { return moveDist; } set { moveDist = value; } }
 
     public Camera3D()
     {
