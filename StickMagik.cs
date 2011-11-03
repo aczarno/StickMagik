@@ -20,19 +20,19 @@ using Crom.Controls.Docking;
 
 namespace StickMagik
 {
+  public struct arcadeStick
+  {
+    public Matrix mWorld;
+    public Mesh model;
+    public Material[] materials;
+    public Texture[] textures;
+    public float radius;
+    public string filename;
+  }
+
   public partial class StickMagik : Form
   {
-    public struct arcadeStick
-    {
-      public Matrix mWorld;
-      public Mesh model;
-      public Material[] materials;
-      public Texture[] textures;
-      public float radius;
-      public string filename;      
-    }
-
-    private enum MouseButtons
+    /*private enum MouseButtons
     {
       MOUSE_LEFT = 0,
       MOUSE_RIGHT,
@@ -42,24 +42,24 @@ namespace StickMagik
     public ManagedTextureManager tm;                    // An instance of the texture manager.
     private CManagedDirectX d3d;
     private Microsoft.DirectX.DirectInput.Device keyboard;
-    private Microsoft.DirectX.DirectInput.Device mouse;
+    private Microsoft.DirectX.DirectInput.Device mouse;*/
     public float currentTime = 0.0f;                // All of these variables are used for frame counting
     public float elapsedTime = 0.0f;                // and calculating delta time.
     public float previousTime = 0.0f;
     public float frameTimer = 0.0f;
     public int frameCounter = 0;
     public int fps = 0;
-    public Microsoft.DirectX.Direct3D.Blend curSrcBlend = Microsoft.DirectX.Direct3D.Blend.BothSourceAlpha;   // Currently selected source blend mode.
+    /*public Microsoft.DirectX.Direct3D.Blend curSrcBlend = Microsoft.DirectX.Direct3D.Blend.BothSourceAlpha;   // Currently selected source blend mode.
     public Microsoft.DirectX.Direct3D.Blend curDestBlend = Microsoft.DirectX.Direct3D.Blend.InvSourceColor;  // Currently selected destination blend mode.
     private Camera3D cam;
     private int mouseX;
-    private int mouseY;
+    private int mouseY;*/
 
     private string assets = "../../Assets/";
 
-    private CDXWrapper.CManagedDirectX.tPrimativeMesh primativeMesh;
+    //private CDXWrapper.CManagedDirectX.tPrimativeMesh primativeMesh;
 
-    arcadeStick TEStick;
+    //arcadeStick TEStick;
 
     RenderWindow rw;
     // Functions
@@ -68,15 +68,17 @@ namespace StickMagik
       rw = new RenderWindow();
       Toolbox tb = new Toolbox();
       DockableFormInfo info = dockContainer.Add(rw, Crom.Controls.Docking.zAllowedDock.All, new Guid("a6402b80-2ebd-4fd3-8930-024a6201d001"));
+      //dockContainer.DockForm(info, DockStyle.Fill, zDockMode.Inner);
+      //info.Dock = DockStyle.Fill;
       dockContainer.Add(tb, Crom.Controls.Docking.zAllowedDock.All, new Guid("096b52a7-5f4b-44ee-ab77-9830ec717002"));
-      d3d = CManagedDirectX.Instance;
+      /*d3d = CManagedDirectX.Instance;
       //this.BackgroundImage
       d3d.InitD3D(rw, rw.Width, rw.Height, true, false);
       //test = Mesh.Sphere(d3d.Device, 100.0f, 12, 12);
       tm = ManagedTextureManager.Instance;
-      tm.InitManagedTextureManager(d3d.Device, d3d.Sprite);
+      tm.InitManagedTextureManager(d3d.Device, d3d.Sprite);*/
 
-      primativeMesh = new CDXWrapper.CManagedDirectX.tPrimativeMesh();
+      /*primativeMesh = new CDXWrapper.CManagedDirectX.tPrimativeMesh();
       primativeMesh.position = new Vector3(0f, 0f, 0f);
       primativeMesh.scale = new Vector3(1.0f, 1.0f, 1.0f);
       primativeMesh.rotation = new Vector3(0.0f, 0.0f, 0.0f);
@@ -84,14 +86,24 @@ namespace StickMagik
       Material newmaterial = new Material();
       newmaterial.Diffuse = Color.Blue;
       newmaterial.Ambient = Color.Blue;
-      primativeMesh.material = newmaterial;
+      primativeMesh.material = newmaterial;*/
 
-      TEStick.filename = assets + "TEStick.x";
-      d3d.LoadMesh(TEStick.filename, ref TEStick.model, ref TEStick.materials, ref TEStick.textures, ref TEStick.radius);
+
+      string filename = assets + "TEStick.x";
+      Matrix initialRotation = Matrix.Identity;
+      initialRotation.RotateYawPitchRoll((float)Math.PI, (float)Math.PI/2f, 0);
+
+      rw.LoadArcadeStick(filename, initialRotation);
+
+      rw.Update();
+
+      rw.SetBounds(0, 0, rw.Width, rw.Height);
+      rw.Dock = DockStyle.None;
+      //rw.LoadMesh(TEStick.filename, ref TEStick.model, ref TEStick.materials, ref TEStick.textures, ref TEStick.radius);
       //d3d.LoadOBJ(assets + "cube.obj", ref TEStick.model, ref TEStick.materials, ref TEStick.textures, ref TEStick.radius);
-      TEStick.mWorld = Matrix.Identity;
+      //TEStick.mWorld = Matrix.Identity;
 
-      TEStick.materials[0].Diffuse = Color.Blue;
+      //TEStick.materials[0].Diffuse = Color.Blue;
       /*TEStick.materials[1].Diffuse = Color.Red;
       TEStick.materials[2].Diffuse = Color.Green;
       TEStick.materials[3].Diffuse = Color.Yellow;
@@ -103,11 +115,11 @@ namespace StickMagik
 
       //TEStick.mWorld.RotateYawPitchRoll((float)Math.PI, (float)Math.PI / 2f, 0);
       // Set up our camera
-      cam = new Camera3D();
-      cam.SetCamera(new Vector3(0, 0, 10), (float)Math.PI*3f/2f, 0);
+      /*cam = new Camera3D();
+      cam.SetCamera(new Vector3(0, 0, 10), (float)Math.PI*3f/2f, 0);*/
     }
 
-    public void InitializeInput()
+    /*public void InitializeInput()
     {
       keyboard = new Microsoft.DirectX.DirectInput.Device(SystemGuid.Keyboard);
       keyboard.SetCooperativeLevel(this, CooperativeLevelFlags.Background | CooperativeLevelFlags.NonExclusive);
@@ -116,18 +128,19 @@ namespace StickMagik
       mouse = new Microsoft.DirectX.DirectInput.Device(SystemGuid.Mouse);
       mouse.SetCooperativeLevel(this, CooperativeLevelFlags.Background | CooperativeLevelFlags.NonExclusive);
       mouse.Acquire();
-    }
+    }*/
 
     public StickMagik()
     {
       InitializeComponent();
       InitializeDevice();
-      InitializeInput();
+      //InitializeInput();
     }
 
-    public void Update()
+    new public void Update()
     {
-      updateInput();
+      rw.Update();
+      //updateInput();
 
       currentTime = Environment.TickCount;
       elapsedTime = (currentTime - previousTime) / 1000;
@@ -141,14 +154,14 @@ namespace StickMagik
         frameCounter = 0;
         frameTimer = Environment.TickCount;
 
-        //tbFPS.Text = fps.ToString();
+        lblFPS.Text = "FPS: " + fps.ToString();
       }
 
       // Updates Here -------------------------------------------------------------------------------------------
 
    
       // --------------
-      d3d.Device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.Gray, 1.0f, 0);
+      /*d3d.Device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.Gray, 1.0f, 0);
       // Begin Rendering
       d3d.Device.BeginScene();
       // Start with a clean world
@@ -191,7 +204,7 @@ namespace StickMagik
       d3d.Device.Transform.View = Matrix.LookAtLH(cam.CameraPosition, cam.CameraTarget, cam.CameraUpVector);
 
       d3d.Device.EndScene();
-      d3d.Device.Present();
+      d3d.Device.Present();*/
     }
     public Image DownloadImage(string _URL)
     {
@@ -296,10 +309,10 @@ namespace StickMagik
       //stream.Close();
     }
 
-    private void updateInput()
-    {
-      KeyboardState keys = keyboard.GetCurrentKeyboardState();
-      MouseState clicks = mouse.CurrentMouseState;
+    //private void updateInput()
+    //{
+    //  KeyboardState keys = keyboard.GetCurrentKeyboardState();
+    //  MouseState clicks = mouse.CurrentMouseState;
 
       
       //tbXY.Text = clicks.ToString();
@@ -313,37 +326,37 @@ namespace StickMagik
       if (keys[Key.D])
         cam.moveCameraRight(1f);*/
       //Capture Buttons.
-      byte[] buttons = clicks.GetMouseButtons();
-      if (buttons[(int)MouseButtons.MOUSE_RIGHT] != 0 && (keys[Key.LeftAlt] || keys[Key.RightAlt]))
-      {
-        cam.SlideCamera(clicks.X*0.1f, clicks.Y*0.1f);
+    //  byte[] buttons = clicks.GetMouseButtons();
+    //  if (buttons[(int)MouseButtons.MOUSE_RIGHT] != 0 && (keys[Key.LeftAlt] || keys[Key.RightAlt]))
+    //  {
+    //    cam.SlideCamera(clicks.X*0.1f, clicks.Y*0.1f);
         //cam.moveCamTargetRight(clicks.X*0.1f);
         //cam.moveCamTargetUp(clicks.Y*0.1f);
-      }
-      else if (buttons[(int)MouseButtons.MOUSE_LEFT] != 0 && (keys[Key.LeftAlt] || keys[Key.RightAlt]))
-      {
+    //  }
+    //  else if (buttons[(int)MouseButtons.MOUSE_LEFT] != 0 && (keys[Key.LeftAlt] || keys[Key.RightAlt]))
+    //  {
         //cam.rotateCam(clicks.X, clicks.Y, 1);
-        cam.RotateCamera(clicks.X*-0.01f, clicks.Y*-0.01f);
-      }
-      else if (buttons[(int)MouseButtons.MOUSE_MIDDLE] != 0 && (keys[Key.LeftAlt] || keys[Key.RightAlt]))
-      {
-        cam.MoveCamera(clicks.Y*0.1f);
-      }
-      else if (buttons[(int)MouseButtons.MOUSE_LEFT] != 0)
-      {
-        if (meshPick(TEStick, mouseX, mouseY) == true)
-        {
-          return;
-        }
-        else
-        {
-          return;
-        }
+    //    cam.RotateCamera(clicks.X*-0.01f, clicks.Y*-0.01f);
+    //  }
+    //  else if (buttons[(int)MouseButtons.MOUSE_MIDDLE] != 0 && (keys[Key.LeftAlt] || keys[Key.RightAlt]))
+    //  {
+    //    cam.MoveCamera(clicks.Y*0.1f);
+    //  }
+    //  else if (buttons[(int)MouseButtons.MOUSE_LEFT] != 0)
+    //  {
+    //    if (meshPick(TEStick, mouseX, mouseY) == true)
+    //    {
+    //      return;
+    //    }
+    //    else
+    //    {
+    //      return;
+    //    }
 
-      }
-    }
+    //  }
+    //}
 
-    private bool meshPick(arcadeStick mesh, int x, int y)
+    /*private bool meshPick(arcadeStick mesh, int x, int y)
     {
       Vector3 v = new Vector3(0,0,0);
       v.X = (((2.0f * x) / rw.Width) - 1) / d3d.Device.GetTransform(TransformType.Projection).M11;
@@ -372,14 +385,14 @@ namespace StickMagik
 
       //IntersectInformation info;
       return mesh.model.Intersect(rayOrigin, rayDir);
-    }
+    }*/
 
-    private void renderWindow_MouseMove(object sender, MouseEventArgs e)
+    /*private void renderWindow_MouseMove(object sender, MouseEventArgs e)
     {
       mouseX = e.X;
       mouseY = e.Y;
       lblMouseCoords.Text = "X:" + e.X.ToString() + ", Y:" + e.Y.ToString();
 
-    }
+    }*/
   }
 }

@@ -12,6 +12,8 @@ namespace CDXWrapper
 {
   class CManagedDirectX
   {
+    public PresentParameters presentParams;
+
     public struct tPrimativeMesh
     {
       public Vector3 position;
@@ -62,51 +64,58 @@ namespace CDXWrapper
 
     public void InitD3D(System.Windows.Forms.Control renderWindow, int screenWidth, int screenHeight, bool isWindowed, bool vsync)
     {
-      PresentParameters presentParams = new PresentParameters();
-      presentParams.BackBufferWidth = screenWidth;
-      presentParams.BackBufferHeight = screenHeight;
-      presentParams.BackBufferFormat = (isWindowed) ? Format.Unknown : Format.R5G6B5;
-      presentParams.BackBufferCount = 1;
-      presentParams.SwapEffect = SwapEffect.Discard;
-      presentParams.AutoDepthStencilFormat = DepthFormat.D16;
-      presentParams.EnableAutoDepthStencil = true;
-      presentParams.DeviceWindow = renderWindow;
-      presentParams.Windowed = isWindowed;
-      presentParams.FullScreenRefreshRateInHz = 0;
-      presentParams.PresentationInterval = (vsync) ? PresentInterval.Default : PresentInterval.Immediate;
-      device = new Device(0, DeviceType.Hardware, renderWindow, CreateFlags.SoftwareVertexProcessing, presentParams);
+      try
+      {
+        presentParams = new PresentParameters();
+        presentParams.BackBufferWidth = screenWidth;
+        presentParams.BackBufferHeight = screenHeight;
+        presentParams.BackBufferFormat = (isWindowed) ? Format.Unknown : Format.R5G6B5;
+        presentParams.BackBufferCount = 1;
+        presentParams.SwapEffect = SwapEffect.Discard;
+        presentParams.AutoDepthStencilFormat = DepthFormat.D16;
+        presentParams.EnableAutoDepthStencil = true;
+        presentParams.DeviceWindow = renderWindow;
+        presentParams.Windowed = isWindowed;
+        presentParams.FullScreenRefreshRateInHz = 0;
+        presentParams.PresentationInterval = (vsync) ? PresentInterval.Default : PresentInterval.Immediate;
+        device = new Device(0, DeviceType.Hardware, renderWindow, CreateFlags.SoftwareVertexProcessing, presentParams);
 
-      device.RenderState.Lighting = true;
+        device.RenderState.Lighting = true;
 
-      device.Lights[0].Type = LightType.Directional;
-      device.Lights[0].Diffuse = Color.White;
-      device.Lights[0].Direction = new Vector3(1, 1, -1);
-      device.Lights[0].Update();
-      device.Lights[0].Enabled = true;
+        device.Lights[0].Type = LightType.Directional;
+        device.Lights[0].Diffuse = Color.White;
+        device.Lights[0].Direction = new Vector3(1, 1, -1);
+        device.Lights[0].Update();
+        device.Lights[0].Enabled = true;
 
-      device.Lights[1].Type = LightType.Directional;
-      device.Lights[1].Diffuse = Color.White;
-      device.Lights[1].Direction = new Vector3(-1, -1, -1);
-      device.Lights[1].Update();
-      device.Lights[1].Enabled = true;
+        device.Lights[1].Type = LightType.Directional;
+        device.Lights[1].Diffuse = Color.White;
+        device.Lights[1].Direction = new Vector3(-1, -1, -1);
+        device.Lights[1].Update();
+        device.Lights[1].Enabled = true;
 
-      device.SamplerState[0].MinFilter = TextureFilter.Anisotropic;
-      device.SamplerState[0].MagFilter = TextureFilter.Anisotropic;
+        device.SamplerState[0].MinFilter = TextureFilter.Anisotropic;
+        device.SamplerState[0].MagFilter = TextureFilter.Anisotropic;
 
-      device.SamplerState[0].AddressU = TextureAddress.Mirror;
-      device.SamplerState[0].AddressV = TextureAddress.Mirror;
+        device.SamplerState[0].AddressU = TextureAddress.Mirror;
+        device.SamplerState[0].AddressV = TextureAddress.Mirror;
 
-      device.RenderState.PointSpriteEnable = true;
-      device.RenderState.PointScaleEnable = true;
-      device.RenderState.PointScaleA = 0f;
-      device.RenderState.PointScaleB = 0f;
-      device.RenderState.PointScaleC = 100f;
+        device.RenderState.PointSpriteEnable = true;
+        device.RenderState.PointScaleEnable = true;
+        device.RenderState.PointScaleA = 0f;
+        device.RenderState.PointScaleB = 0f;
+        device.RenderState.PointScaleC = 100f;
 
-      device.RenderState.SourceBlend = Blend.One;
-      device.RenderState.DestinationBlend = Blend.One;
+        device.RenderState.SourceBlend = Blend.One;
+        device.RenderState.DestinationBlend = Blend.One;
 
-      device.Transform.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4, (float)screenWidth / (float)screenHeight, 0.3f, 500f);
-      device.Transform.View = Matrix.LookAtLH(new Vector3(0, -5f, 0.0f), new Vector3(0, 0, 0), new Vector3(0, 0, 1));
+        device.Transform.Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4, (float)screenWidth / (float)screenHeight, 0.3f, 500f);
+        device.Transform.View = Matrix.LookAtLH(new Vector3(0, -5f, 0.0f), new Vector3(0, 0, 0), new Vector3(0, 0, 1));
+      }
+      catch (Exception)
+      {
+        DialogResult r = MessageBox.Show("Failed to create the device.", "ManagedDirect3D::Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+      }
 
       try
       {
@@ -496,7 +505,7 @@ namespace CDXWrapper
       device.Transform.World = Matrix.Scaling(mesh.scale) * Matrix.Translation(mesh.position) * Matrix.RotationX(mesh.rotation.X) * Matrix.RotationY(mesh.rotation.Y) * Matrix.RotationZ(mesh.rotation.Z);
       device.VertexFormat = CustomVertex.PositionNormalTextured.Format;
       device.Material = mesh.material;
-      device.SetTexture(0, null);
+      //device.SetTexture(0, null);
       device.DrawUserPrimitives(PrimitiveType.TriangleList, 4, verticesarray);
     }
   }

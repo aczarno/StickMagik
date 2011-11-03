@@ -64,6 +64,7 @@
           this.tsProgress = new System.Windows.Forms.ToolStripProgressBar();
           this.lblMouseCoords = new System.Windows.Forms.ToolStripStatusLabel();
           this.dockContainer = new Crom.Controls.Docking.DockContainer();
+          this.lblFPS = new System.Windows.Forms.ToolStripStatusLabel();
           this.menuStrip1.SuspendLayout();
           this.statusStrip1.SuspendLayout();
           this.SuspendLayout();
@@ -315,7 +316,8 @@
           // 
           this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsProgress,
-            this.lblMouseCoords});
+            this.lblMouseCoords,
+            this.lblFPS});
           this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
           this.statusStrip1.Location = new System.Drawing.Point(0, 792);
           this.statusStrip1.Name = "statusStrip1";
@@ -356,6 +358,12 @@
           this.dockContainer.TitleBarGradientSelectedColor1 = System.Drawing.Color.DarkGray;
           this.dockContainer.TitleBarGradientSelectedColor2 = System.Drawing.Color.White;
           this.dockContainer.TitleBarTextColor = System.Drawing.Color.Black;
+          // 
+          // lblFPS
+          // 
+          this.lblFPS.Name = "lblFPS";
+          this.lblFPS.Size = new System.Drawing.Size(41, 17);
+          this.lblFPS.Text = "FPS:00";
           // 
           // StickMagik
           // 
@@ -414,6 +422,7 @@
         private System.Windows.Forms.ToolStripProgressBar tsProgress;
         private System.Windows.Forms.ToolStripStatusLabel lblMouseCoords;
         private Crom.Controls.Docking.DockContainer dockContainer;
+        private System.Windows.Forms.ToolStripStatusLabel lblFPS;
     }
 }
 
