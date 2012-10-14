@@ -9,14 +9,13 @@ using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Net;
-
 // DX wrapper and texture manager
 using CDXWrapper;
 
 using Microsoft.DirectX;
 using Microsoft.DirectX.Direct3D;
 using Microsoft.DirectX.DirectInput;
-using Crom.Controls.Docking;
+using Crom.Controls;
 
 namespace StickMagik
 {
@@ -61,16 +60,32 @@ namespace StickMagik
 
     //arcadeStick TEStick;
 
-    RenderWindow rw;
+    //RenderWindow rw;
+    OgreForm of;
     // Functions
     public void InitializeDevice()
     {
-      rw = new RenderWindow();
+      //rw = new OpenGLWindow();
+      of = new OgreForm();;
       Toolbox tb = new Toolbox();
-      DockableFormInfo info = dockContainer.Add(rw, Crom.Controls.Docking.zAllowedDock.All, new Guid("a6402b80-2ebd-4fd3-8930-024a6201d001"));
+
+      // Create a new instance of the child form.
+      //DockableToolWindow childForm = new DockableToolWindow();
+
+      // Add the form to the dock container
+      //DockableToolWindow
+      //dockContainer.AddToolWindow(rw);
+      //rw.Show();
+      dockContainer.AddToolWindow(of);
+      of.Show();
+      dockContainer.AddToolWindow(tb);
+      tb.Show();
+      // Show the form
+      //childForm.Show();
+      ///DockableFormInfo info = dockContainer.Add(rw, Crom.Controls.Docking.zAllowedDock.All, new Guid("a6402b80-2ebd-4fd3-8930-024a6201d001"));
       //dockContainer.DockForm(info, DockStyle.Fill, zDockMode.Inner);
       //info.Dock = DockStyle.Fill;
-      dockContainer.Add(tb, Crom.Controls.Docking.zAllowedDock.All, new Guid("096b52a7-5f4b-44ee-ab77-9830ec717002"));
+      ///dockContainer.Add(tb, Crom.Controls.Docking.zAllowedDock.All, new Guid("096b52a7-5f4b-44ee-ab77-9830ec717002"));
       /*d3d = CManagedDirectX.Instance;
       //this.BackgroundImage
       d3d.InitD3D(rw, rw.Width, rw.Height, true, false);
@@ -89,16 +104,18 @@ namespace StickMagik
       primativeMesh.material = newmaterial;*/
 
 
-      string filename = assets + "TEStick.x";
+      string filename = assets + "TestStick.obj";
+      //ArcadeStick stickTest = new ArcadeStick();
+      //stickTest.LoadOBJ(filename);
       Matrix initialRotation = Matrix.Identity;
       initialRotation.RotateYawPitchRoll((float)Math.PI, (float)Math.PI/2f, 0);
 
-      rw.LoadArcadeStick(filename, initialRotation);
+      //rw.LoadArcadeStick(filename, initialRotation);
 
-      rw.Update();
+      //rw.Update();
 
-      rw.SetBounds(0, 0, rw.Width, rw.Height);
-      rw.Dock = DockStyle.None;
+      of.SetBounds(0, 0, of.Width, of.Height);
+      of.Dock = DockStyle.None;
       //rw.LoadMesh(TEStick.filename, ref TEStick.model, ref TEStick.materials, ref TEStick.textures, ref TEStick.radius);
       //d3d.LoadOBJ(assets + "cube.obj", ref TEStick.model, ref TEStick.materials, ref TEStick.textures, ref TEStick.radius);
       //TEStick.mWorld = Matrix.Identity;
@@ -139,9 +156,10 @@ namespace StickMagik
 
     new public void Update()
     {
-      rw.Update();
+      //rw.Update();
       //updateInput();
-
+      of.Render();
+      
       currentTime = Environment.TickCount;
       elapsedTime = (currentTime - previousTime) / 1000;
       previousTime = currentTime;

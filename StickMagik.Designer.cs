@@ -63,8 +63,8 @@
           this.statusStrip1 = new System.Windows.Forms.StatusStrip();
           this.tsProgress = new System.Windows.Forms.ToolStripProgressBar();
           this.lblMouseCoords = new System.Windows.Forms.ToolStripStatusLabel();
-          this.dockContainer = new Crom.Controls.Docking.DockContainer();
           this.lblFPS = new System.Windows.Forms.ToolStripStatusLabel();
+          this.dockContainer = new Crom.Controls.DockContainer();
           this.menuStrip1.SuspendLayout();
           this.statusStrip1.SuspendLayout();
           this.SuspendLayout();
@@ -344,26 +344,32 @@
           this.lblMouseCoords.Spring = true;
           this.lblMouseCoords.Text = "X:9999, Y:9999";
           // 
-          // dockContainer
-          // 
-          this.dockContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(118)))), ((int)(((byte)(118)))), ((int)(((byte)(118)))));
-          this.dockContainer.CanMoveByMouseFilledForms = true;
-          this.dockContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-          this.dockContainer.Location = new System.Drawing.Point(0, 24);
-          this.dockContainer.Name = "dockContainer";
-          this.dockContainer.Size = new System.Drawing.Size(1104, 768);
-          this.dockContainer.TabIndex = 11;
-          this.dockContainer.TitleBarGradientColor1 = System.Drawing.SystemColors.Control;
-          this.dockContainer.TitleBarGradientColor2 = System.Drawing.Color.White;
-          this.dockContainer.TitleBarGradientSelectedColor1 = System.Drawing.Color.DarkGray;
-          this.dockContainer.TitleBarGradientSelectedColor2 = System.Drawing.Color.White;
-          this.dockContainer.TitleBarTextColor = System.Drawing.Color.Black;
-          // 
           // lblFPS
           // 
           this.lblFPS.Name = "lblFPS";
           this.lblFPS.Size = new System.Drawing.Size(41, 17);
           this.lblFPS.Text = "FPS:00";
+          // 
+          // dockContainer
+          // 
+          this.dockContainer.BackColor = System.Drawing.SystemColors.Window;
+          this.dockContainer.BottomPanelHeight = 150;
+          this.dockContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+          this.dockContainer.LeftPanelWidth = 150;
+          this.dockContainer.Location = new System.Drawing.Point(0, 24);
+          this.dockContainer.MinimumSize = new System.Drawing.Size(504, 528);
+          this.dockContainer.Name = "dockContainer";
+          this.dockContainer.RightPanelWidth = 150;
+          this.dockContainer.SelectToolWindowsOnHoover = false;
+          this.dockContainer.Size = new System.Drawing.Size(1104, 768);
+          this.dockContainer.TabButtonNotSelectedColor = System.Drawing.Color.DarkGray;
+          this.dockContainer.TabButtonSelectedBackColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(242)))), ((int)(((byte)(200)))));
+          this.dockContainer.TabButtonSelectedBackColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(215)))), ((int)(((byte)(157)))));
+          this.dockContainer.TabButtonSelectedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(75)))), ((int)(((byte)(75)))), ((int)(((byte)(111)))));
+          this.dockContainer.TabButtonSelectedColor = System.Drawing.Color.Black;
+          this.dockContainer.TabButtonShowSelection = false;
+          this.dockContainer.TabIndex = 0;
+          this.dockContainer.TopPanelHeight = 150;
           // 
           // StickMagik
           // 
@@ -421,7 +427,7 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripProgressBar tsProgress;
         private System.Windows.Forms.ToolStripStatusLabel lblMouseCoords;
-        private Crom.Controls.Docking.DockContainer dockContainer;
+        private Crom.Controls.DockContainer dockContainer;
         private System.Windows.Forms.ToolStripStatusLabel lblFPS;
     }
 }

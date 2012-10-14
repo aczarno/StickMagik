@@ -80,9 +80,8 @@ namespace CDXWrapper
         presentParams.PresentationInterval = (vsync) ? PresentInterval.Default : PresentInterval.Immediate;
         device = new Device(0, DeviceType.Hardware, renderWindow, CreateFlags.SoftwareVertexProcessing, presentParams);
 
-        device.RenderState.Lighting = true;
-
-        device.Lights[0].Type = LightType.Directional;
+        device.RenderState.Lighting = false;
+        /*device.Lights[0].Type = LightType.Directional;
         device.Lights[0].Diffuse = Color.White;
         device.Lights[0].Direction = new Vector3(1, 1, -1);
         device.Lights[0].Update();
@@ -93,6 +92,12 @@ namespace CDXWrapper
         device.Lights[1].Direction = new Vector3(-1, -1, -1);
         device.Lights[1].Update();
         device.Lights[1].Enabled = true;
+
+        device.Lights[2].Type = LightType.Spot;
+        device.Lights[2].Diffuse = Color.Blue;
+        device.Lights[2].Direction = new Vector3(0, 0, -1);
+        device.Lights[2].Update();
+        device.Lights[2].Enabled = true;*/
 
         device.SamplerState[0].MinFilter = TextureFilter.Anisotropic;
         device.SamplerState[0].MagFilter = TextureFilter.Anisotropic;
@@ -371,6 +376,8 @@ namespace CDXWrapper
 
     public void DrawMesh(Mesh mesh, Material[] meshmaterials, Texture[] meshtextures)
     {
+      if (meshmaterials == null || meshtextures == null)
+        return;
       for (int i = 0; i < meshmaterials.Length; i++)
       {
         device.Material = meshmaterials[i];
@@ -530,13 +537,16 @@ namespace CDXWrapper
 
     public Camera3D()
     {
+      cameraTarget = new Vector3(0, 0, 0);
+      cameraPosition = new Vector3(0, 0, -10);
+      cameraUpVector = new Vector3(0, 1, 0);
     }
 
     public void SetCamera(Vector3 cPosition, float h, float v)
     {
       cameraPosition = cPosition;
       cameraTarget = new Vector3(0, 0, 0);
-      cameraUpVector = new Vector3(0, 0, 0);
+      cameraUpVector = new Vector3(0, 1, 0);
       hRadians = h;
       vRadians = v;
 

@@ -6,10 +6,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Crom.Controls;
 
 namespace StickMagik
 {
-  public partial class Toolbox : Form
+  public partial class Toolbox : DockableToolWindow
   {
     private Color primaryColor = new Color();
     private Color secondaryColor = new Color();

@@ -48,14 +48,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Crom.Controls, Version=2.0.5.21, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Crom.Controls.Docking, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\Crom.Controls.dll</HintPath>
+      <HintPath>.\Crom.Controls.Docking.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.DirectX, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="Microsoft.DirectX.Direct3D, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="Microsoft.DirectX.Direct3DX, Version=1.0.2911.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="Microsoft.DirectX.DirectInput, Version=1.0.2902.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Mogre, Version=1.7.1.0, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="MOIS, Version=1.1.0.0, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
+    <Reference Include="OpenTK.Compatibility, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
+    <Reference Include="OpenTK.GLControl, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -73,13 +78,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArcadeStick.cs" />
     <Compile Include="CManagedDirectX.cs" />
     <Compile Include="ManagedTextureManager.cs" />
-    <Compile Include="RenderWindow.cs">
+    <Compile Include="OBJMesh.cs" />
+    <Compile Include="OBJMeshLoader.cs" />
+    <Compile Include="OgreForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RenderWindow.Designer.cs">
-      <DependentUpon>RenderWindow.cs</DependentUpon>
+    <Compile Include="OgreForm.designer.cs">
+      <DependentUpon>OgreForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OgreRenderPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="OgreRenderPanel.Designer.cs">
+      <DependentUpon>OgreRenderPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OpenGLWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OpenGLWindow.Designer.cs">
+      <DependentUpon>OpenGLWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="StickMagik.cs">
       <SubType>Form</SubType>
@@ -89,8 +109,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="RenderWindow.resx">
-      <DependentUpon>RenderWindow.cs</DependentUpon>
+    <EmbeddedResource Include="OgreForm.resx">
+      <DependentUpon>OgreForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpenGLWindow.resx">
+      <DependentUpon>OpenGLWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StickMagik.resx">
       <DependentUpon>StickMagik.cs</DependentUpon>
@@ -154,6 +177,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
