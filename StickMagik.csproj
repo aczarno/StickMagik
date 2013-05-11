@@ -79,10 +79,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArcadeStick.cs" />
-    <Compile Include="CManagedDirectX.cs" />
-    <Compile Include="ManagedTextureManager.cs" />
-    <Compile Include="OBJMesh.cs" />
-    <Compile Include="OBJMeshLoader.cs" />
+    <Compile Include="Callback.cs" />
+    <Compile Include="Messenger.cs" />
+    <Compile Include="ModelComponentsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelComponentsWindow.Designer.cs">
+      <DependentUpon>ModelComponentsWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="OgreForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,12 +99,6 @@
     <Compile Include="OgreRenderPanel.Designer.cs">
       <DependentUpon>OgreRenderPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="OpenGLWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OpenGLWindow.Designer.cs">
-      <DependentUpon>OpenGLWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="StickMagik.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,11 +107,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ModelComponentsWindow.resx">
+      <DependentUpon>ModelComponentsWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OgreForm.resx">
       <DependentUpon>OgreForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OpenGLWindow.resx">
-      <DependentUpon>OpenGLWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StickMagik.resx">
       <DependentUpon>StickMagik.cs</DependentUpon>
