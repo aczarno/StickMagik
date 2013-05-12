@@ -31,6 +31,7 @@
       this.btnPrimaryColor = new System.Windows.Forms.Panel();
       this.btnSecondaryColor = new System.Windows.Forms.Panel();
       this.colorDialog = new System.Windows.Forms.ColorDialog();
+      this.btnMatEdit = new System.Windows.Forms.Button();
       this.SuspendLayout();
       // 
       // btnPrimaryColor
@@ -53,11 +54,23 @@
       this.btnSecondaryColor.TabIndex = 0;
       this.btnSecondaryColor.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.btnSecondaryColor_MouseDoubleClick);
       // 
+      // btnMatEdit
+      // 
+      this.btnMatEdit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+      this.btnMatEdit.Image = global::StickMagik.Properties.Resources.MatIcon;
+      this.btnMatEdit.Location = new System.Drawing.Point(12, 13);
+      this.btnMatEdit.Name = "btnMatEdit";
+      this.btnMatEdit.Size = new System.Drawing.Size(25, 23);
+      this.btnMatEdit.TabIndex = 1;
+      this.btnMatEdit.UseVisualStyleBackColor = true;
+      this.btnMatEdit.Click += new System.EventHandler(this.btnMatEdit_Click);
+      // 
       // Toolbox
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(82, 262);
+      this.Controls.Add(this.btnMatEdit);
       this.Controls.Add(this.btnSecondaryColor);
       this.Controls.Add(this.btnPrimaryColor);
       this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
@@ -72,5 +85,6 @@
     private System.Windows.Forms.Panel btnPrimaryColor;
     private System.Windows.Forms.Panel btnSecondaryColor;
     private System.Windows.Forms.ColorDialog colorDialog;
+    private System.Windows.Forms.Button btnMatEdit;
   }
 }

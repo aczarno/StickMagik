@@ -16,6 +16,7 @@ namespace StickMagik
     {
       InitializeComponent();
       Messenger<ModelComponent>.AddListener("AddFragment", AddComponent);
+      
     }
 
     ~ModelComponentsWindow()

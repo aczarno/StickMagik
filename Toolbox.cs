@@ -39,5 +39,10 @@ namespace StickMagik
         btnSecondaryColor.BackColor = colorDialog.Color;
       }
     }
+
+    private void btnMatEdit_Click(object sender, EventArgs e)
+    {
+
+    }
   }
 }

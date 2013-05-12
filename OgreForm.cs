@@ -318,8 +318,15 @@ namespace StickMagik
 
         foreach (RaySceneQueryResultEntry entry in results)
         {
-          
-          entry.movable.ParentSceneNode.ShowBoundingBox = true;
+          if (entry.movable != camMgr.mainCam)
+          {
+            entry.movable.ParentSceneNode.ShowBoundingBox = true;
+            Entity n = (Entity)sceneMgr.GetEntity(entry.movable.Name);
+            uint numChildren = n.NumSubEntities;
+            return;
+          }
+
+          //entry.movable.m
           // Do stuff with the objects that intersect the ray
           continue;
         }
@@ -327,6 +334,111 @@ namespace StickMagik
         //if we hit the head then there is 1 result
         //return results.Count > 0;
       }
+
+    /*void getMeshInformation(Ogre.MovableObject manual,
+					                    uint vertex_count,
+					                    Ogre.Vector3 vertices,
+					                    uint index_count,
+					                    ulong indices,
+					                    Ogre.Vector3 position,
+					                    Ogre.Quaternion orient,
+					                    Ogre.Vector3 scale)
+    {
+	    List<Ogre.Vector3> returnVertices;
+	    List<ulong> returnIndices;
+	    ulong thisSectionStart = 0;
+	    for (int i=0; i<manual.getNumSections(); i++)
+	    {
+		    Ogre.ManualObject.ManualObjectSection section = manual.getSection(i);
+		    RenderOperation renderOp = section.getRenderOperation();
+     
+		    List<Ogre.Vector3> pushVertices;
+		    //Collect the vertices
+		    {
+			    Ogre.VertexElement vertexElement = renderOp.vertexData.vertexDeclaration.FindElementBySemantic(Ogre.VES_POSITION);
+			    Ogre.HardwareVertexBufferSharedPtr vertexBuffer = renderOp.vertexData.vertexBufferBinding.GetBuffer(vertexElement.GetSource());
+     
+			    char verticesBuffer = vertexBuffer.lock(Ogre.HardwareBuffer.LockOptions.HBL_READ_ONLY);
+			    float positionArrayHolder;
+     
+			    thisSectionStart = returnVertices.size() + pushVertices.size();
+     
+			    pushVertices.reserve(renderOp.vertexData.vertexCount);
+     
+			    for (unsigned int j=0; j<renderOp.vertexData.vertexCount; j++)
+			    {
+				    vertexElement.baseVertexPointerToElement(verticesBuffer + j * vertexBuffer.getVertexSize(), positionArrayHolder);
+				    Ogre.Vector3 vertexPos = Ogre::Vector3(positionArrayHolder[0],
+													    positionArrayHolder[1],
+													    positionArrayHolder[2]);
+     
+				    vertexPos = (orient * (vertexPos * scale)) + position;
+     
+				    pushVertices.push_back(vertexPos);
+			    }
+     
+			    vertexBuffer.unlock();
+		    }
+		    //Collect the indices
+		    {
+			    if (renderOp.useIndexes)
+			    {
+				    Ogre.HardwareIndexBufferSharedPtr indexBuffer = renderOp.indexData.indexBuffer;
+     
+				    if (indexBuffer.isNull() || renderOp.operationType != Ogre.RenderOperation::OT_TRIANGLE_LIST)
+				    {
+					    //No triangles here, so we just drop the collected vertices and move along to the next section.
+					    continue;
+				    }
+				    else
+				    {
+					    returnVertices.reserve(returnVertices.size() + pushVertices.size());
+					    returnVertices.insert(returnVertices.end(), pushVertices.begin(), pushVertices.end());
+				    }
+     
+				    uint pLong = indexBuffer.lock(Ogre.HardwareBuffer.LockOptions.HBL_READ_ONLY);
+				    ushort pShort = pLong;
+     
+				    returnIndices.reserve(returnIndices.size() + renderOp.indexData.indexCount);
+     
+				    for (int j = 0; j < renderOp.indexData.indexCount; j++)
+				    {
+					    ulong index;
+					    //We also have got to remember that for a multi section object, each section has
+					    //different vertices, so the indices will not be correct. To correct this, we 
+					    //have to add the position of the first vertex in this section to the index
+     
+					    //(At least I think so...)
+					    if (indexBuffer.getType() == Ogre.HardwareIndexBuffer.IndexType.IT_32BIT)
+						    index = (ulong)pLong[j] + thisSectionStart;
+					    else
+						    index = (ulong)pShort[j] + thisSectionStart;
+     
+					    returnIndices.push_back(index);
+				    }
+     
+				    indexBuffer.unlock();
+			    }
+		    }
+	    }
+     
+	    //Now we simply return the data.
+	    index_count = returnIndices.size();
+	    vertex_count = returnVertices.size();
+	    vertices = new Ogre.Vector3[vertex_count];
+	    for (ulong i = 0; i<vertex_count; i++)
+	    {
+		    vertices[i] = returnVertices[i];
+	    }
+	    indices = new ulong[index_count];
+	    for (ulong i = 0; i<index_count; i++)
+	    {
+		    indices[i] = returnIndices[i];
+	    }
+     
+	    //All done.
+	    return;
+    }*/
 
       public void Render()
       {
