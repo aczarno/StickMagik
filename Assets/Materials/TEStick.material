@@ -24,7 +24,7 @@ material TurboPanelMat
 
 			texture_unit
 			{
-				texture TurboPanel.psd
+				texture TurboPanel.png
 				tex_coord_set 0
 				colour_op modulate
 				scale 1 1
@@ -48,7 +48,7 @@ material LaminatedTop
 
 			texture_unit
 			{
-				texture Art Hobbies TE Template_Kinkos Ver.jpg
+				texture Art_Hobbies_TE_Template_Kinkos_Ver.jpg
 				tex_coord_set 0
 				colour_op modulate
 				scale 1 1
@@ -151,7 +151,7 @@ material DustCoverMat
 
 			texture_unit
 			{
-				texture DustCoverTexture.psd
+				texture DustCoverTexture.png
 				tex_coord_set 0
 				colour_op modulate
 				scale 1 1

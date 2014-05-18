@@ -40,13 +40,14 @@ namespace StickMagik
 
     OgreForm of;
     ModelComponentsWindow mf;
-
+    EditMaterialWindow emw;
     // Functions
     public void InitializeDevice()
     {
       mf = new ModelComponentsWindow();
       of = new OgreForm();;
       Toolbox tb = new Toolbox();
+      emw = new EditMaterialWindow();
 
       // Add the form to the dock container
       dockContainer.AddToolWindow(mf);
@@ -55,6 +56,8 @@ namespace StickMagik
       of.Show();
       dockContainer.AddToolWindow(tb);
       tb.Show();
+      dockContainer.AddToolWindow(emw);
+      emw.Show();
 
       of.SetBounds(0, 0, of.Width, of.Height);
       of.Dock = DockStyle.None;
