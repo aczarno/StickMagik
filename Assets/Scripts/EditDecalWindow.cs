@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Windows.Forms;
 
 public class EditDecalWindow : MonoBehaviour {
 
@@ -35,13 +36,13 @@ public class EditDecalWindow : MonoBehaviour {
     texturePreview.texture = curSelectedComponent.material.mainTexture;
   }
 
-  [DllImport("user32.dll")]
-  private static extern void OpenFileDialog();
+  //[DllImport("user32.dll")]
+  //private static extern void OpenFileDialog();
 
   public void openNewTexture()
   {
-    System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
-    if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+    OpenFileDialog ofd = new OpenFileDialog();
+    if (ofd.ShowDialog() == DialogResult.OK)
     {
       byte[] rawData;
       Texture2D fill = new Texture2D(1, 1);

@@ -1,5 +1,0 @@
-Change List:
-
-Please visit
-http://candlelightinteractive.com/docs/uas-hypertext/html/VersionHistory.htm
-for a complete list of changes in this version.
