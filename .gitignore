@@ -33,6 +33,7 @@ sysinfo.txt
 *.pidb
 *.booproj
 *.DS_store
+.vsconfig
 
 # Directories
 [Bb]in
@@ -45,3 +46,4 @@ _ReSharper*/
 [Tt]emp
 [Bb]uild
 [Bb]uilds
+[Ll]ogs
