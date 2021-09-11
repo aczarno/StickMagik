@@ -8,6 +8,8 @@ public class ArcadeStick : MonoBehaviour
   List<Component> components = new List<Component>();
   public ListBox componentsList;
   public Material highlightMat = null;
+  public PreviewCamera previewCam = null;
+  public EditButtonWindow editBtnWindow = null;
 
   Component curSelectedComponent = null;
 
@@ -20,10 +22,18 @@ public class ArcadeStick : MonoBehaviour
     parseComponents();
   }
 
-  // Update is called once per frame
-  void Update()
+  private void OnEnable()
   {
+    Messenger<Component>.AddListener("ComponentSelected", SelectComponent);
+  }
+  private void OnDisable()
+  {
+    Messenger<Component>.RemoveListener("ComponentSelected", SelectComponent);
+  }
 
+  public Component GetCurrentSelectedComponenet()
+  {
+    return curSelectedComponent;
   }
 
   /// <summary>
@@ -49,51 +59,94 @@ public class ArcadeStick : MonoBehaviour
     if (components == null || components.Count == 0)
       return;
 
-    Material[] mats;
+    // Find our selected component
+    Component selected = components.Find(comp => comp.name == aListBox.valueString);
+
+    // Something went horibly wrong
+    if (selected == null)
+    {
+      Debug.LogError("Cannot find component: " + aListBox.valueString + " in our list of components.");
+      return;
+    }
+
+    SelectComponent(selected);
+  }
+
+  /// <summary>
+  /// Deselects any currently selected component object and selects and adds an outline material to the new selection.
+  /// </summary>
+  /// <param name="_selected">The newly selected component.</param>
+  void SelectComponent(Component _selected)
+  {
+    List<Material> mats;
     List<Renderer> selectedRenderers = new List<Renderer>();
+    int index = -1;
     // Unhighlight current selection if there is one
     if (curSelectedComponent != null)
     {
       selectedRenderers.AddRange(curSelectedComponent.GetComponentsInChildren<Renderer>());
       for (int i = 0; i < selectedRenderers.Count; i++)
       {
-        mats = new Material[selectedRenderers[i].materials.Length-1];
+        mats = new List<Material>(selectedRenderers[i].materials);
 
-        // Cut off the last material
-        for(int j=0; j<mats.Length; j++)
-        {
-          mats[j] = selectedRenderers[i].materials[j];
-        }
-        
-        selectedRenderers[i].materials = mats;
+        index = mats.FindIndex(comp => comp.name == highlightMat.name || comp.name == highlightMat.name + " (Instance)");
+
+        if (index != -1)
+          mats.RemoveAt(index);
+
+        selectedRenderers[i].materials = mats.ToArray();
       }
-      
     }
 
-    // Find our selected component
-    curSelectedComponent = components.Find(comp => comp.name == aListBox.valueString);
+    curSelectedComponent = _selected;
 
-    // Something went horibly wrong
-    if (curSelectedComponent == null)
-    {
-      Debug.LogError("Cannot find component: " + aListBox.valueString + " in our list of components.");
+    // If selected component was null then consider this a deselection and break out
+    if (highlightMat == null || curSelectedComponent == null)
       return;
-    }
 
-    if (highlightMat == null)
-      return;
     selectedRenderers.Clear();
-    selectedRenderers.AddRange(curSelectedComponent.GetComponentsInChildren<Renderer>());
+    selectedRenderers.AddRange(_selected.GetComponentsInChildren<Renderer>());
+    // Highlight our new selection
     for (int i = 0; i < selectedRenderers.Count; i++)
     {
-      mats = new Material[selectedRenderers[i].materials.Length+1];
-      selectedRenderers[i].materials.CopyTo(mats, 0);
-      //selectedRenderers[i]?.GetMaterials(mats);
-      mats[mats.Length-1] = highlightMat;
-      selectedRenderers[i].materials = mats;
+      mats = new List<Material>(selectedRenderers[i].materials);
+      mats.Add(highlightMat);
+      selectedRenderers[i].materials = mats.ToArray();
     }
 
-   
-        
+    if (previewCam != null)
+      previewCam.SetNewTarget(curSelectedComponent);
+
+    // Fill and show component properties window
+    UpdatePropertiesWindow(); 
+  }
+
+  void UpdatePropertiesWindow()
+  {
+    if (curSelectedComponent == null)
+    {
+      Debug.LogError("Trying to set up property windows for a component but there isn't one currently selected! NO BEUNO");
+      return;
+    }
+
+    switch(curSelectedComponent.componenttype)
+    {
+      case Component.ComponentType.BUTTON:
+        if (editBtnWindow == null)
+        {
+          Debug.LogError("ArcadeStick: EditBtnWindow not set, we can't display button component properties.");
+          return;
+        }
+
+        editBtnWindow.ShowWindow();
+        break;
+      case Component.ComponentType.BODY:
+      case Component.ComponentType.CORD:
+      case Component.ComponentType.DECAL:
+      case Component.ComponentType.JOYSTICK:
+      case Component.ComponentType.PANEL:
+      case Component.ComponentType.TRIM:
+        break;
+    }
   }
 }

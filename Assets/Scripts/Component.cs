@@ -19,6 +19,6 @@ public class Component : MonoBehaviour
 
   void OnMouseUpAsButton()
   {
-    Messenger<GameObject>.Broadcast("ComponentSelected", gameObject);
+    Messenger<Component>.Broadcast("ComponentSelected", this);
   }
 }
